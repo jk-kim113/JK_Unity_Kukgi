@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 5901703942335296311}
   - component: {fileID: 1248828893463394686}
   - component: {fileID: 2706041590160705119}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &6786528220127465432
 Transform:
@@ -87,6 +87,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: mod_prop_animal_cow
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ed7d62fecb799b94697ebbebaf6af9da, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ed7d62fecb799b94697ebbebaf6af9da, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: ed7d62fecb799b94697ebbebaf6af9da, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -131,6 +139,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: ed7d62fecb799b94697ebbebaf6af9da, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b16e243dcccee474b89f5da90bfcf8ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed7d62fecb799b94697ebbebaf6af9da, type: 3}
 --- !u!4 &7297622222614558573 stripped

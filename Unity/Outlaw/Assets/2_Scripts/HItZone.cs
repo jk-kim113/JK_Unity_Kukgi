@@ -23,7 +23,7 @@ public class HitZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             EnableTrigger(false);
             Player p = other.GetComponent<Player>();
@@ -35,15 +35,15 @@ public class HitZone : MonoBehaviour
             {
                 if (p.OnHitting(((Monster)_ownerCharacter)._finalDamage))
                     IngameManager._instance.ReceivePlayerDie();
-            }   
+            }
             else
             {
-                if(p.OnHitting(((Player)_ownerCharacter)._finalDamage))
+                if (p.OnHitting(((Player)_ownerCharacter)._finalDamage))
                 {
 
                 }
             }
-                
+
 
         }
     }

@@ -618,6 +618,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 3569e3a45f7cfd74ead711a34c9fc282, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b16e243dcccee474b89f5da90bfcf8ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3569e3a45f7cfd74ead711a34c9fc282, type: 3}
 --- !u!4 &101231612 stripped
@@ -1214,6 +1218,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: a5ed04819410add479700b56e487c2bf, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b16e243dcccee474b89f5da90bfcf8ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5ed04819410add479700b56e487c2bf, type: 3}
 --- !u!4 &362802329 stripped
@@ -7582,11 +7590,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Forest_Normal_4x4
       objectReference: {fileID: 0}
-    - target: {fileID: 671328482725461081, guid: 070f2cdbdf0da124d801bb6ef1df41cf,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 671328482725461082, guid: 070f2cdbdf0da124d801bb6ef1df41cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7641,26 +7644,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1495867207526046254, guid: 070f2cdbdf0da124d801bb6ef1df41cf,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3727638100933478565, guid: 070f2cdbdf0da124d801bb6ef1df41cf,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5249899117106465655, guid: 070f2cdbdf0da124d801bb6ef1df41cf,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789046332968216417, guid: 070f2cdbdf0da124d801bb6ef1df41cf,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 070f2cdbdf0da124d801bb6ef1df41cf, type: 3}
@@ -8156,16 +8139,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1183179023}
     m_Modifications:
-    - target: {fileID: 3328043274239648198, guid: 0eeb9dcb547c02b41ba3d984ee7e5f5e,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3328043274239648198, guid: 0eeb9dcb547c02b41ba3d984ee7e5f5e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 7013918196576906795, guid: 0eeb9dcb547c02b41ba3d984ee7e5f5e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8225,16 +8198,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Chicken
-      objectReference: {fileID: 0}
-    - target: {fileID: 8519193655402473716, guid: 0eeb9dcb547c02b41ba3d984ee7e5f5e,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8519193655402473716, guid: 0eeb9dcb547c02b41ba3d984ee7e5f5e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eeb9dcb547c02b41ba3d984ee7e5f5e, type: 3}
@@ -8336,11 +8299,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 612991400}
     m_Modifications:
-    - target: {fileID: 2002616457408809481, guid: 9d446cf7109186c47becc71ff3782333,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 2055019373528969926, guid: 9d446cf7109186c47becc71ff3782333,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8400,11 +8358,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6313914093321856165, guid: 9d446cf7109186c47becc71ff3782333,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d446cf7109186c47becc71ff3782333, type: 3}
@@ -8490,11 +8443,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 612991400}
     m_Modifications:
-    - target: {fileID: 3053501280994407123, guid: fbc451540fc680d4f86d355c38b8d1f1,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 4606453298386648700, guid: fbc451540fc680d4f86d355c38b8d1f1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8554,11 +8502,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tree1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6385907248914195638, guid: fbc451540fc680d4f86d355c38b8d1f1,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbc451540fc680d4f86d355c38b8d1f1, type: 3}
@@ -8630,30 +8573,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7297622222614063949, guid: e81d78ab662cc65458575389511b11c3,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7297622222614063949, guid: e81d78ab662cc65458575389511b11c3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 8255443632222011733, guid: e81d78ab662cc65458575389511b11c3,
         type: 3}
       propertyPath: m_Name
       value: Cow
-      objectReference: {fileID: 0}
-    - target: {fileID: 8255443632222011733, guid: e81d78ab662cc65458575389511b11c3,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8255443632222011733, guid: e81d78ab662cc65458575389511b11c3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e81d78ab662cc65458575389511b11c3, type: 3}
