@@ -1,0 +1,17 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Bullet : MonoBehaviour
+{
+    float _force = 800;
+    Rigidbody _rgb3D;
+
+
+    private void Awake()
+    {
+        _rgb3D = GetComponent<Rigidbody>();
+        _rgb3D.AddForce(transform.forward * _force);
+        Destroy(gameObject, 3.0f);
+    }
+}

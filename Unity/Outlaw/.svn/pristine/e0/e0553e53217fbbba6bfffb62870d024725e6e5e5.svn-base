@@ -1,0 +1,55 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UnitBase : MonoBehaviour
+{
+    public enum eAniType
+    {
+        IDLE       = 0,
+        RUN,
+        WALK_BACK,
+        WALK_LEFT,
+        WALK_RIGHT,
+        ATTACK,
+        RELOAD,
+        WALK,
+        BACKHOME,
+        DEAD
+    }
+
+    bool _isDie;
+    protected bool _isDead { get { return _isDie; } set { _isDie = value;} }
+
+    string _name;
+    int _life;
+    int _att;
+    int _def;
+    int _curLife;
+
+    protected int _baseAtt { get { return _att; } }
+
+    protected void InitializeData(string name, int hp, int att, int def)
+    {
+        this._name = name;
+        this._life = this._curLife = hp;
+        this._att = att;
+        this._def = def;
+    }
+
+    protected bool HittingMe(int dam)
+    {
+        int finishD = dam - _def;
+        if (finishD < 1)
+            finishD = 1;
+
+        _curLife -= finishD;
+        if (_curLife <= 0)
+        {
+            _curLife = 0;
+            return true;
+        }
+        Debug.Log(string.Format("체력이 {0}만큼 남았습니다.", _curLife.ToString()));
+        return false;
+    }
+}

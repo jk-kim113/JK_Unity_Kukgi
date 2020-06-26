@@ -1,0 +1,335 @@
+fileFormatVersion: 2
+guid: 1a9d6b8fdc6550c42a062ff1c4a1d5da
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8622259438476403829
+    second: CardBack_Normal
+  - first:
+      213: -7890400080868310949
+    second: CardBack_Magic
+  - first:
+      213: 7456400397701033493
+    second: CardBack_2
+  - first:
+      213: 3206306540558959625
+    second: CardBack_3
+  - first:
+      213: -7394176375384145644
+    second: CardBack_4
+  - first:
+      213: 4830832236571986125
+    second: CardBack_5
+  - first:
+      213: -322891363116684129
+    second: CardBack_6
+  - first:
+      213: 3421458679739011357
+    second: CardBack_7
+  - first:
+      213: 7030083234669421529
+    second: CardBack_8
+  - first:
+      213: 362911247039460080
+    second: CardBack_9
+  - first:
+      213: 6322350853164208797
+    second: CardBack_10
+  - first:
+      213: 2635100643894076360
+    second: CardBack_11
+  - first:
+      213: 1266571823957446773
+    second: CardBack_12
+  - first:
+      213: 3136569750866249164
+    second: CardBack_13
+  - first:
+      213: -8934643854469021069
+    second: CardBack_14
+  - first:
+      213: -3335752302857746218
+    second: CardBack_15
+  - first:
+      213: 7015703751196640258
+    second: CardBack_16
+  - first:
+      213: 8601998723752263727
+    second: CardBack_17
+  - first:
+      213: -6867667479908211681
+    second: CardBack_18
+  - first:
+      213: 2790845177779477017
+    second: CardBack_19
+  - first:
+      213: -2683821504033940834
+    second: CardBack_20
+  - first:
+      213: -1568704832040508316
+    second: CardBack_21
+  - first:
+      213: -8771594809081034317
+    second: CardBack_22
+  - first:
+      213: 3909622032159731389
+    second: CardBack_23
+  - first:
+      213: 6469036533279501990
+    second: CardBack_24
+  - first:
+      213: 4223825828599700020
+    second: CardBack_25
+  - first:
+      213: 8527279164078304218
+    second: CardBack_26
+  - first:
+      213: -6367950602816092204
+    second: CardBack_27
+  - first:
+      213: 4891405978550776171
+    second: CardBack_28
+  - first:
+      213: -6394824970012670410
+    second: CardBack_29
+  - first:
+      213: -270060857101245953
+    second: CardBack_30
+  - first:
+      213: 7199362804075837946
+    second: CardBack_31
+  - first:
+      213: 7343083788874369741
+    second: CardBack_32
+  - first:
+      213: 734307240658545687
+    second: CardBack_33
+  - first:
+      213: 3983303383822633510
+    second: CardBack_34
+  - first:
+      213: -7781473669017184352
+    second: CardBack_35
+  - first:
+      213: -8507512923747030055
+    second: CardBack_36
+  - first:
+      213: -5673392605580257427
+    second: CardBack_37
+  - first:
+      213: 6891541310003310378
+    second: CardBack_38
+  - first:
+      213: 8570830293389902999
+    second: CardBack_39
+  - first:
+      213: -9098904723788808575
+    second: CardBack_40
+  - first:
+      213: -1276363075212810716
+    second: CardBack_41
+  - first:
+      213: -2986473753420645383
+    second: CardBack_42
+  - first:
+      213: 7845683935926979961
+    second: CardBack_43
+  - first:
+      213: 4040327613108386714
+    second: CardBack_44
+  - first:
+      213: 2566683945266942304
+    second: CardBack_45
+  - first:
+      213: -5776552855253263132
+    second: CardBack_46
+  - first:
+      213: 1825249706728162694
+    second: CardBack_47
+  - first:
+      213: -7518175637954025071
+    second: CardBack_48
+  - first:
+      213: 6219159435206624713
+    second: CardBack_49
+  - first:
+      213: -3941625372724121203
+    second: CardBack_Rare
+  - first:
+      213: 8697821532082557842
+    second: CardBack_1
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CardBack_Normal
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 220
+        height: 326
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8bda5039b4975880800000000000000
+      internalID: -8622259438476403829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CardBack_0
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 0
+        width: 214
+        height: 326
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d81bc1d6b988c49c0800000000000000
+      internalID: -3941625372724121203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CardBack_Magic
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 0
+        width: 220
+        height: 326
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b50812c7eeaaf7290800000000000000
+      internalID: -7890400080868310949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
