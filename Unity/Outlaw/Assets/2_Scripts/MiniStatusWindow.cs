@@ -38,4 +38,8 @@ public class MiniStatusWindow : MonoBehaviour
     {
         _gaugeBullet.value = bulletrate;
     }
+    //public void SettingBulletSlider(float bulletrate)
+    //{
+    //    _gaugeBullet.value = bulletrate;
+    //}
 }
