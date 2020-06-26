@@ -22,14 +22,19 @@ public class SpawnControl : MonoBehaviour
     GameObject _prefabMon;
     float _timeCheck = 0;
     List<GameObject> _spawnMonList = new List<GameObject>();
+    int _numDeadMon;
 
     private void Awake()
     {
         _prefabMon = Resources.Load("Prefabs/Characters/MonGhost") as GameObject;
+        _numDeadMon = _maxCreateCount;
     }
 
     private void Update()
     {
+        if (IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
+            return;
+
         if (_maxCreateCount > 0)
         {
             if(_spawnMonList.Count < _maxViewCount)
@@ -40,20 +45,17 @@ public class SpawnControl : MonoBehaviour
                     _timeCheck = 0;
                     GameObject go = Instantiate(_prefabMon, transform.position, transform.rotation);
                     Monster mon = go.GetComponent<Monster>();
-                    mon.InitSetting(this);
                     if(_isRandom)
                     {
                         int type, kind;
-                        type = 0;
-                        kind = 0;
-                        type += 0;
-                        kind += 0;
-                        // _typeRoam 랜덤 선택.
-                        // _kindRoam 랜덤 선택.
+                        type = Random.Range(0, (int)Monster.eTypeRoam.max);
+                        kind = Random.Range(0, (int)Monster.eKindRoam.max); ;
+
+                        mon.SetRoamPositions(transform.GetChild(0), (Monster.eTypeRoam)type, (Monster.eKindRoam)kind, this);
                     }
                     else
                     {
-                        mon.SetRoamPositions(transform.GetChild(0), _typeRoam, _kindRoam);
+                        mon.SetRoamPositions(transform.GetChild(0), _typeRoam, _kindRoam, this);
                     }
                     
                     _spawnMonList.Add(go);
@@ -75,11 +77,43 @@ public class SpawnControl : MonoBehaviour
         }
     }
 
-    public void GroupBattle(Player target)
+    /// <summary>
+    /// 이 컨트롤러에 속한 몬스터들의 전체 공격
+    /// </summary>
+    /// <param name="p">공격 목표</param>
+    public void AttackAtOnce(Player p)
     {
-        for(int n = 0; n < _spawnMonList.Count; n++)
+        for (int n = 0; n < _spawnMonList.Count; n++)
         {
-            _spawnMonList[n].GetComponent<Monster>().OnBattle(target);
+            Monster m = _spawnMonList[n].GetComponent<Monster>();
+            m.OnBattle(p);
         }
+    }
+
+    /// <summary>
+    /// 이 컨트롤러에 속한 몬스터들에게 타깃이던 플레이어가 죽었음을 알린다.
+    /// </summary>
+    public void AllNotificationPlayerDeath()
+    {
+        for (int n = 0; n < _spawnMonList.Count; n++)
+        {
+            Monster m = _spawnMonList[n].GetComponent<Monster>();
+            m.Winner();
+        }
+    }
+
+    public void NoticeMonDead()
+    {
+        _numDeadMon--;
+        if (CheckAllMonsterDead())
+            IngameManager._instance.CheckAllSpawnPoint();
+    }
+
+    public bool CheckAllMonsterDead()
+    {   
+        if (_numDeadMon <= 0)
+            return true;
+        else
+            return false;
     }
 }

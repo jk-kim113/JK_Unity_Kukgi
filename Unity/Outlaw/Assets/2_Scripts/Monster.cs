@@ -51,12 +51,13 @@ public class Monster : UnitBase
     eTypeRoam _roamingType = eTypeRoam.Random;
     eKindRoam _roamingKind = eKindRoam.Random;
     eAniType _nowAction;
+    public eAniType _curAction { get { return _nowAction; } }
     Animation _ctrlAni;
     NavMeshAgent _navAgent;
     Dictionary<eAniKeyType, string> _aniList = new Dictionary<eAniKeyType, string>();
     List<Vector3> _roamPointList = new List<Vector3>();
     Player _targetPlayer;
-    SpawnControl _spawnControl;
+    SpawnControl _ownerParents;
 
     // Monster의 기본 정보.
     float _runSpeed = 4;
@@ -98,13 +99,11 @@ public class Monster : UnitBase
         _sightZone.InitSetting(this);
         _ctrlAni.Play(_aniList[eAniKeyType.IDLE]);
         _hitZone.EnableTrigger(false);
-
-        _statusMonWnd.SettingHPBar(1);
     }
 
     private void Update()
     {
-        if (_isDead)
+        if (_isDead || IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
             return;
 
         if (!_ctrlAni.isPlaying)
@@ -156,17 +155,13 @@ public class Monster : UnitBase
                 {
                     transform.position = _posBattleStart;
                     _isSelectAct = false;
+                    _targetPlayer = null;
                 }
                 break;
         }
 
         // AI 선택에 대한 프로세스
         SelectAIProcess();
-    }
-
-    public void InitSetting(SpawnControl sc)
-    {
-        _spawnControl = sc;
     }
 
     public void SettingGoalPosition(Vector3 point, bool isRun = false)
@@ -179,7 +174,7 @@ public class Monster : UnitBase
         _navAgent.destination = point;
     }
 
-    public void SetRoamPositions(Transform root, eTypeRoam type, eKindRoam kind)
+    public void SetRoamPositions(Transform root, eTypeRoam type, eKindRoam kind, SpawnControl owner)
     {
         for(int n = 0; n < root.childCount; n++)
         {
@@ -188,24 +183,33 @@ public class Monster : UnitBase
 
         _roamingType = type;
         _roamingKind = kind;
+        _ownerParents = owner;
     }
     
     public void OnBattle(Player p)
     {
+        if (_targetPlayer != null)
+            return;
+
         _posBattleStart = transform.position;
         _targetPlayer = p;
         // 전투시에 일어나야 할 설정.
         if(Vector3.Distance(transform.position, _targetPlayer.transform.position) <= _attackRange)
             ChangedAction(eAniType.ATTACK);
         else
-        {   
+        {
             ChangedAction(eAniType.RUN);
             _navAgent.destination = _targetPlayer.transform.position;
         }
+
+        _ownerParents.AttackAtOnce(p);
     }
 
     public void Winner()
     {
+        if (_targetPlayer == null)
+            return;
+
         StartCoroutine(WinnerAction());
     }
 
@@ -376,7 +380,9 @@ public class Monster : UnitBase
             if (HittingMe(hitDamage))
             { // 죽었을 때
                 ChangedAction(eAniType.DEAD);
-                Destroy(gameObject, 2f);
+                _ownerParents.NoticeMonDead();
+                GetComponent<BoxCollider>().enabled = false;
+                Destroy(gameObject, 3f);
             }
             else
             { // 살았을 때
@@ -406,7 +412,6 @@ public class Monster : UnitBase
             else
             {
                 OnBattle((Player)bullet._ownerTarget);
-                _spawnControl.GroupBattle((Player)bullet._ownerTarget);
             }
 
             Destroy(other.gameObject);

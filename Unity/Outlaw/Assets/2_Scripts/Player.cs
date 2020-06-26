@@ -45,7 +45,7 @@ public class Player : UnitBase
 
         _animControl.SetBool("IsBattle", true);
 
-        InitializeData("Link", 100, 2, 1);
+        InitializeData("Link", 500, 2, 1);
     }
 
     private void Start()
@@ -60,9 +60,10 @@ public class Player : UnitBase
 
     private void Update()
     {
-        if (_isDead || _nowAction == eAniType.RELOAD)
+        Debug.Log("1" + _nowAction);
+        if (_isDead || _nowAction == eAniType.RELOAD || IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
             return;
-
+        Debug.Log("2" + _nowAction);
 #if UNITY_EDITOR
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -188,6 +189,7 @@ public class Player : UnitBase
             if (HittingMe(hitDamage))
             { // 죽었을 때
                 ChangedAction(eAniType.DEAD);
+                IngameManager._instance.GameEnd();
             }
             else
             { // 살았을 때

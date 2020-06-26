@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 338181572545289687}
   - component: {fileID: 338181572545289686}
   - component: {fileID: 1198761561}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Car_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,6 +86,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: b8d469c1a18b6a8438933bf04fb619dd, type: 3}
       propertyPath: m_Name
       value: mod_prop_car_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: b8d469c1a18b6a8438933bf04fb619dd, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b8d469c1a18b6a8438933bf04fb619dd, type: 3}
       propertyPath: m_LocalPosition.x

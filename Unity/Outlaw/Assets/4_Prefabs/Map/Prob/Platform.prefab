@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 4890414438111481879}
   - component: {fileID: 7239034815557414126}
   - component: {fileID: 8565248993053677911}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8024086172675862194
 Transform:
@@ -97,6 +97,14 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 742290c320166e34a9ea805a2ba7faea, type: 3}
       propertyPath: m_Name
       value: mod_ground_forrest_platform_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 742290c320166e34a9ea805a2ba7faea, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 742290c320166e34a9ea805a2ba7faea, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 742290c320166e34a9ea805a2ba7faea, type: 3}
       propertyPath: m_LocalPosition.x
