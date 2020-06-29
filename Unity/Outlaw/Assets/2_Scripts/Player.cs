@@ -20,6 +20,15 @@ public class Player : UnitBase
     MiniStatusWindow _wndPlayerStatus;
 
     eAniType _nowAction;
+    public int _curAction
+    {
+        get { return (int)_nowAction; }
+        set
+        {
+            _nowAction = (eAniType)value;
+            ChangedAction(_nowAction);
+        }
+    }
 
     // Player 기본 정보
     float _runSpeed = 5;
@@ -30,6 +39,9 @@ public class Player : UnitBase
     float _movSpeed;
     bool _isAttack = false;
     int _curBulletCount = 0;
+
+    bool isRewind = false;
+    public bool _isRewinding { set { isRewind = value; } }
 
     public int _finalDamage { get { return _baseAtt; } }
 
@@ -60,10 +72,11 @@ public class Player : UnitBase
 
     private void Update()
     {
-        Debug.Log("1" + _nowAction);
-        if (_isDead || _nowAction == eAniType.RELOAD || IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
+        //Debug.Log("1" + _nowAction);
+        if (_isDead || _nowAction == eAniType.RELOAD 
+            || IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay || isRewind)
             return;
-        Debug.Log("2" + _nowAction);
+        //Debug.Log("2" + _nowAction);
 #if UNITY_EDITOR
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");

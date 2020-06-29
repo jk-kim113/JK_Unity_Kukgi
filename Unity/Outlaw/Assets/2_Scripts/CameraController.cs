@@ -30,5 +30,9 @@ public class CameraController : MonoBehaviour
 
             transform.position = Vector3.Lerp(transform.position, target, _followSpeed * Time.deltaTime);
         }
+        else
+        {
+            _playerObj = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 }

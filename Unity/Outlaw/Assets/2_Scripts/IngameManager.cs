@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IngameManager : MonoBehaviour
 {
+#pragma warning disable 0649
+    [SerializeField]
+    Text _textTimePhase;
+#pragma warning restore
+
     public enum eTypeGameState
     {
         InitGame    = 0,
@@ -11,6 +17,7 @@ public class IngameManager : MonoBehaviour
         PlayerSpawn,
         GameStart,
         GamePlay,
+        GameRewind,
         GameEnd,
         ShowReslut
     }
@@ -21,7 +28,13 @@ public class IngameManager : MonoBehaviour
     public eTypeGameState _curGameState { get { return _nowGameState; } }
 
     GameObject _prefabPlayer;
+    TimeBody _timeBody;
+
     GameObject _miniWnd;
+
+    InfoMessage _infoWnd;
+
+    float _timePhase = 8.0f;
 
     static IngameManager _uniqueInstance;
     public static IngameManager _instance { get { return _uniqueInstance; } }
@@ -33,7 +46,35 @@ public class IngameManager : MonoBehaviour
 
     private void Start()
     {
+        _textTimePhase.text = string.Format("{0:F2}", _timePhase);
         InitGameData();
+    }
+
+    private void Update()
+    {
+        switch(_nowGameState)
+        {
+            case eTypeGameState.GamePlay:
+                _timePhase -= Time.deltaTime;
+                if(_timePhase < 0.5)
+                {
+                    Time.timeScale = 0.1f;
+                }
+
+                if(_timePhase < 0)
+                {
+                    _timePhase = 0;
+                    Time.timeScale = 1.0f;
+                    _nowGameState = eTypeGameState.GameRewind;
+                }
+
+                _textTimePhase.text = string.Format("{0:F2}", _timePhase);
+                break;
+
+            case eTypeGameState.GameRewind:
+                _timeBody.StartRewind();
+                break;
+        }
     }
 
     void InitGameData()
@@ -43,8 +84,12 @@ public class IngameManager : MonoBehaviour
         _miniWnd = GameObject.Find("MiniAvatarWindow");
         _miniWnd.SetActive(false);
 
+        _infoWnd = GameObject.Find("InfoMessageWindow").GetComponent<InfoMessage>();
+        _infoWnd.gameObject.SetActive(false);
+
         ListUpSpawnControl();
         _prefabPlayer = Resources.Load("Prefabs/Characters/PlayerObject") as GameObject;
+        _timeBody = _prefabPlayer.GetComponent<TimeBody>();
 
         ReadyGame();
     }
@@ -52,6 +97,15 @@ public class IngameManager : MonoBehaviour
     void ReadyGame()
     {
         _nowGameState = eTypeGameState.Ready;
+
+        StartCoroutine(GameReadyCoroutine());
+    }
+
+    IEnumerator GameReadyCoroutine()
+    {
+        _infoWnd.EnableInfoMessage(true, "Ready");
+
+        yield return new WaitForSeconds(1.5f);
 
         SpawnPlayer();
     }
@@ -65,7 +119,25 @@ public class IngameManager : MonoBehaviour
         Vector3 sapwnPos = GameObject.Find("PlayerSpawnPoint").transform.position;
         Instantiate(_prefabPlayer, sapwnPos, _prefabPlayer.transform.rotation);
 
+        StartCoroutine(StartGameCoroutine());
+    }
+
+    IEnumerator StartGameCoroutine()
+    {
+        _infoWnd.EnableInfoMessage(true, "Game Start");
+        yield return new WaitForSeconds(1f);
+
+        for (int n = 3; n > 0 ; n--)
+        {   
+            _infoWnd.EnableInfoMessage(true, n.ToString());
+            yield return new WaitForSeconds(1f);
+        }
+
+        _infoWnd.EnableInfoMessage(false);
+
         GameStart();
+
+        StopAllCoroutines();
     }
 
     void GameStart()
@@ -84,7 +156,20 @@ public class IngameManager : MonoBehaviour
     {
         _nowGameState = eTypeGameState.GameEnd;
 
+        StartCoroutine(EndGameCoroutine());
+    }
+
+    IEnumerator EndGameCoroutine()
+    {
+        _infoWnd.EnableInfoMessage(true, "Game Clear");
+
+        yield return new WaitForSeconds(2f);
+
+        _infoWnd.EnableInfoMessage(false);
+
         GameResult();
+
+        StopAllCoroutines();
     }
 
     void GameResult()
