@@ -22,17 +22,17 @@ public class SpawnControl : MonoBehaviour
     GameObject _prefabMon;
     float _timeCheck = 0;
     List<GameObject> _spawnMonList = new List<GameObject>();
-    int _numDeadMon;
+
+    public bool _checkRemainingCount { get { return (_maxCreateCount == 0 &&_spawnMonList.Count == 0); } }
 
     private void Awake()
     {
         _prefabMon = Resources.Load("Prefabs/Characters/MonGhost") as GameObject;
-        _numDeadMon = _maxCreateCount;
     }
 
     private void Update()
     {
-        if (IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
+        if (IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play)
             return;
 
         if (_maxCreateCount > 0)
@@ -100,20 +100,5 @@ public class SpawnControl : MonoBehaviour
             Monster m = _spawnMonList[n].GetComponent<Monster>();
             m.Winner();
         }
-    }
-
-    public void NoticeMonDead()
-    {
-        _numDeadMon--;
-        if (CheckAllMonsterDead())
-            IngameManager._instance.CheckAllSpawnPoint();
-    }
-
-    public bool CheckAllMonsterDead()
-    {   
-        if (_numDeadMon <= 0)
-            return true;
-        else
-            return false;
     }
 }

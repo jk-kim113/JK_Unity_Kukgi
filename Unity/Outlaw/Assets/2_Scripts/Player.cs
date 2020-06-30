@@ -37,7 +37,7 @@ public class Player : UnitBase
 
     // Player 활용 정보
     float _movSpeed;
-    bool _isAttack = false;
+    //bool _isAttack = false;
     int _curBulletCount = 0;
 
     bool isRewind = false;
@@ -61,11 +61,7 @@ public class Player : UnitBase
     }
 
     private void Start()
-    {
-        _stickLauncher = GameObject.FindGameObjectWithTag("LauncherStick").GetComponent<StickObject>();
-        _stickLauncher.SetOwnerPlayer(this);
-        _stickMovement = GameObject.FindGameObjectWithTag("MoveStick").GetComponent<StickObject>();
-        _stickMovement.SetOwnerPlayer(this);
+    {   
         _wndPlayerStatus = GameObject.Find("MiniAvatarWindow").GetComponent<MiniStatusWindow>();
         _wndPlayerStatus.InitSetting(_myName, 1, 1, 1);
     }
@@ -74,7 +70,7 @@ public class Player : UnitBase
     {
         //Debug.Log("1" + _nowAction);
         if (_isDead || _nowAction == eAniType.RELOAD 
-            || IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay || isRewind)
+            || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || isRewind)
             return;
         //Debug.Log("2" + _nowAction);
 #if UNITY_EDITOR
@@ -202,7 +198,6 @@ public class Player : UnitBase
             if (HittingMe(hitDamage))
             { // 죽었을 때
                 ChangedAction(eAniType.DEAD);
-                IngameManager._instance.GameEnd();
             }
             else
             { // 살았을 때
@@ -213,5 +208,13 @@ public class Player : UnitBase
         }
 
         return _isDead;
+    }
+
+    public void SettingSticks()
+    {
+        _stickLauncher = GameObject.FindGameObjectWithTag("LauncherStick").GetComponent<StickObject>();
+        _stickLauncher.SetOwnerPlayer(this);
+        _stickMovement = GameObject.FindGameObjectWithTag("MoveStick").GetComponent<StickObject>();
+        _stickMovement.SetOwnerPlayer(this);
     }
 }

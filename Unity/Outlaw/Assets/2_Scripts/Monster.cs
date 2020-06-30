@@ -103,7 +103,7 @@ public class Monster : UnitBase
 
     private void Update()
     {
-        if (_isDead || IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
+        if (_isDead || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play)
             return;
 
         if (!_ctrlAni.isPlaying)
@@ -380,7 +380,6 @@ public class Monster : UnitBase
             if (HittingMe(hitDamage))
             { // 죽었을 때
                 ChangedAction(eAniType.DEAD);
-                _ownerParents.NoticeMonDead();
                 GetComponent<BoxCollider>().enabled = false;
                 Destroy(gameObject, 3f);
             }

@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        _playerObj = GameObject.FindGameObjectWithTag("Player");
+        //_playerObj = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
@@ -30,9 +30,14 @@ public class CameraController : MonoBehaviour
 
             transform.position = Vector3.Lerp(transform.position, target, _followSpeed * Time.deltaTime);
         }
-        else
-        {
-            _playerObj = GameObject.FindGameObjectWithTag("Player");
-        }
+        //else
+        //{
+        //    _playerObj = GameObject.FindGameObjectWithTag("Player");
+        //}
+    }
+
+    public void SetPlayer(GameObject p)
+    {
+        _playerObj = p;
     }
 }

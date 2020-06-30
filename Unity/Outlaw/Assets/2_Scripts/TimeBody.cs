@@ -11,12 +11,12 @@ public class TimeBody : MonoBehaviour
     GameObject _modelObj;
     Player _player;
 
-    private void Start()
+    public void InitSetting()
     {
         _modelObj = transform.GetChild(0).gameObject;
-        _player = gameObject.GetComponent<Player>();
+        _player = GetComponent<Player>();
     }
-
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
@@ -27,6 +27,9 @@ public class TimeBody : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //if (IngameManager._instance._curGameState != IngameManager.eTypeGameState.GamePlay)
+        //    return;
+
         if (isRewinding)
             Rewind();
         else

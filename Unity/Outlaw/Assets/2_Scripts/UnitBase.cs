@@ -19,7 +19,7 @@ public class UnitBase : MonoBehaviour
     }
 
     bool _isDie;
-    protected bool _isDead { get { return _isDie; } set { _isDie = value;} }
+    public bool _isDead { get { return _isDie; } set { _isDie = value;} }
 
     string _name;
     int _life;

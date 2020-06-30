@@ -9,6 +9,9 @@ TagManager:
   - FxTemporaire
   - BulletObj
   - Monster
+  - MessageBox
+  - StickControllWindow
+  - MiniAvatarWindow
   layers:
   - Default
   - TransparentFX
