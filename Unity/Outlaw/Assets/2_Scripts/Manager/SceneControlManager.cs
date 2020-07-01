@@ -32,7 +32,7 @@ public class SceneControlManager : MonoBehaviour
 
     eLoadingState _currentStateLoad;
 
-    LoadingWindow _loadingWnd;
+    GameObject _prefabLoadingWnd;    
 
     int _nowStageNumber, _oldStageNumber;
 
@@ -45,6 +45,8 @@ public class SceneControlManager : MonoBehaviour
     {
         _uniqueInstance = this;
         DontDestroyOnLoad(gameObject);
+
+        _prefabLoadingWnd = Resources.Load("Prefabs/UI/LoadingWindowFrame") as GameObject;
     }
 
     private void Start()
@@ -73,26 +75,22 @@ public class SceneControlManager : MonoBehaviour
         AsyncOperation aOper;
         Scene aScene;
 
-        GameObject go = Resources.Load("Prefabs/UI/LoadingWindowFrame") as GameObject;
-        _loadingWnd = go.GetComponent<LoadingWindow>();
-        Instantiate(go, transform);
-        _loadingWnd.gameObject.SetActive(true);
-        
+        GameObject go = Instantiate(_prefabLoadingWnd.gameObject, transform);
+        LoadingWindow _loadingWnd = go.GetComponent<LoadingWindow>();
+
         // Scene을 로드
         _currentStateLoad = eLoadingState.LoadSceneStart;
-        aOper = SceneManager.LoadSceneAsync(sceneName);
-        _loadingWnd.gameObject.SetActive(true);
         _loadingWnd.ShowLoadingTarget(sceneName + " Loading");
-        _loadingWnd.ShowLoadingBar(0);
+        aOper = SceneManager.LoadSceneAsync(sceneName);
+        
         yield return new WaitForSeconds(1f);
         while (!aOper.isDone)
         {
             _loadingWnd.ShowLoadingBar(aOper.progress);
             _currentStateLoad = eLoadingState.LoadingScene;
-            yield return null;
+            yield return new WaitForSeconds(1f);
         }
 
-        _loadingWnd.ShowLoadingBar(1);
         aScene = SceneManager.GetSceneByName(sceneName);
         _currentStateLoad = eLoadingState.LoadSceneEnd;
 
@@ -118,27 +116,26 @@ public class SceneControlManager : MonoBehaviour
             //}
 
             _currentStateLoad = eLoadingState.LoadStageStart;
-            aOper = SceneManager.LoadSceneAsync(StageName + stageNumber.ToString(), LoadSceneMode.Additive);
-            _loadingWnd.gameObject.SetActive(true);
             _loadingWnd.ShowLoadingTarget(StageName + stageNumber.ToString() + " Loading");
-            _loadingWnd.ShowLoadingBar(0);
+            aOper = SceneManager.LoadSceneAsync(StageName + stageNumber.ToString(), LoadSceneMode.Additive);
+            
             yield return new WaitForSeconds(1f);
             while (!aOper.isDone)
             {
                 _loadingWnd.ShowLoadingBar(aOper.progress);
                 _currentStateLoad = eLoadingState.LoadingStage;
-                yield return null;
+                yield return new WaitForSeconds(1f);
             }
 
-            _loadingWnd.ShowLoadingBar(1);
             aScene = SceneManager.GetSceneByName(StageName + stageNumber.ToString());
             _currentStateLoad = eLoadingState.LoadStageEnd;
             yield return new WaitForSeconds(5f);
         }
 
         SceneManager.SetActiveScene(aScene);
-        yield return new WaitForSeconds(1f);
         _currentStateLoad = eLoadingState.LoadEnd;
+
+        yield return new WaitForSeconds(1f);
         Destroy(_loadingWnd.gameObject);
 
         yield return null;
