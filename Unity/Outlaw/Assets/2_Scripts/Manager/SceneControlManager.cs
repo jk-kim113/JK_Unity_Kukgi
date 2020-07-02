@@ -52,12 +52,15 @@ public class SceneControlManager : MonoBehaviour
     private void Start()
     {
         //임시
-        StartSceneIngame();
+        StartSceneLobby();
     }
 
     public void StartSceneLobby()
     {
+        _oldSceneType = _nowSceneType;
+        _nowSceneType = eSceneType.LOBBY;
 
+        StartCoroutine(LoadingScene("LobbyScene", 0));
     }
 
     public void StartSceneIngame(int stageNum = 1)
@@ -83,18 +86,17 @@ public class SceneControlManager : MonoBehaviour
         _loadingWnd.ShowLoadingTarget(sceneName + " Loading");
         aOper = SceneManager.LoadSceneAsync(sceneName);
         
-        yield return new WaitForSeconds(1f);
         while (!aOper.isDone)
         {
+            yield return null;
             _loadingWnd.ShowLoadingBar(aOper.progress);
             _currentStateLoad = eLoadingState.LoadingScene;
-            yield return new WaitForSeconds(1f);
         }
 
         aScene = SceneManager.GetSceneByName(sceneName);
         _currentStateLoad = eLoadingState.LoadSceneEnd;
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1.5f);
 
         if (_nowSceneType == eSceneType.INGAME)
         {// IngameScene일 경우 스테이지를 로드한다, 그리고 SetActiveScene을 StageScene으로 한다
@@ -119,23 +121,20 @@ public class SceneControlManager : MonoBehaviour
             _loadingWnd.ShowLoadingTarget(StageName + stageNumber.ToString() + " Loading");
             aOper = SceneManager.LoadSceneAsync(StageName + stageNumber.ToString(), LoadSceneMode.Additive);
             
-            yield return new WaitForSeconds(1f);
             while (!aOper.isDone)
             {
+                yield return null;
                 _loadingWnd.ShowLoadingBar(aOper.progress);
                 _currentStateLoad = eLoadingState.LoadingStage;
-                yield return new WaitForSeconds(1f);
             }
 
             aScene = SceneManager.GetSceneByName(StageName + stageNumber.ToString());
             _currentStateLoad = eLoadingState.LoadStageEnd;
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1.5f);
         }
 
         SceneManager.SetActiveScene(aScene);
         _currentStateLoad = eLoadingState.LoadEnd;
-
-        yield return new WaitForSeconds(1f);
         Destroy(_loadingWnd.gameObject);
 
         yield return null;

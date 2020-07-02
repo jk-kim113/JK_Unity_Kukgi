@@ -57,6 +57,6 @@ public class StageWindow : BaseWindow
 
     public void ClickStartBtn()
     {
-
+        SceneControlManager._instance.StartSceneIngame(_selectNum);
     }
 }

@@ -7,6 +7,8 @@ public class Player : UnitBase
 #pragma warning disable 0649
     [SerializeField]
     Transform _posFire;
+    [SerializeField]
+    Transform _posLook;
 #pragma warning restore
 
     CharacterController _controller;
@@ -48,6 +50,8 @@ public class Player : UnitBase
     public float _bulletRate { get { return (float)(_limitBulletCount - _curBulletCount) / _limitBulletCount; } }
     //public float _maxBulletCount { get { return _limitBulletCount; } }
 
+    public Transform _tfLookPos { get { return _posLook; } }
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -69,37 +73,82 @@ public class Player : UnitBase
     private void Update()
     {
         //Debug.Log("1" + _nowAction);
-        if (_isDead || _nowAction == eAniType.RELOAD 
+        if (_isDead || _nowAction == eAniType.RELOAD
             || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || isRewind)
             return;
         //Debug.Log("2" + _nowAction);
-#if UNITY_EDITOR
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        Vector3 move = new Vector3(vertical, 0, -horizontal);
-        move = (move.magnitude > 1) ? move.normalized : move;
 
-        //Vector3 move = _stickMovement._dirMov;
+        Vector3 move = Vector3.zero;
+
+        if (IngameManager._instance._firstView)
+        {
+            float mx, mz;
+#if UNITY_EDITOR
+            mx = Input.GetAxis("Horizontal");
+            mz = Input.GetAxis("Vertical");
+            move = transform.forward * mz;
+#else
+            mx = -_stickMovement._dirMoveFirst.x;
+            mz = -_stickMovement._dirMoveFirst.y;
+            mv = transform.forward * mz;
+#endif
+            if (_stickLauncher._isAimMotion)
+            {
+                Vector3 md = new Vector3(mx, 0, mz);
+                md = (md.magnitude > 1) ? md.normalized : md;
+                ChangeAnimationToDirectionFirstView(md);
+
+                md = transform.TransformDirection(md);
+                _controller.Move(md * _movSpeed * Time.deltaTime);
+            }
+            else
+            {
+                if (mz > 0)
+                    ChangedAction(eAniType.RUN);
+                else if(mz < 0)
+                    ChangedAction(eAniType.WALK_BACK);
+                else
+                {
+                    if (mx != 0)
+                        ChangedAction(eAniType.WALK_BACK);
+                    else
+                        ChangedAction(eAniType.IDLE);
+                }
+                transform.Rotate(Vector3.up * mx * Time.deltaTime * 180);
+
+                _controller.Move(move * _movSpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+#if UNITY_EDITOR
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            move = new Vector3(vertical, 0, -horizontal);
+            move = (move.magnitude > 1) ? move.normalized : move;
+
+            //Vector3 move = _stickMovement._dirMov;
 #else
         Vector3 move = _stickMovement._dirMov;
 #endif
-        if (_stickLauncher._isAimMotion)
-        {
-            //방향을 받아서 방향에 따른 애니메이션 변화
-            ChangeAnimationToDirection(move);
-        }
-        else
-        {//일반적인 이동시
-            if (move.magnitude == 0)
-                ChangedAction(eAniType.IDLE);
-            else if (move.magnitude > 0)
+            if (_stickLauncher._isAimMotion)
             {
-                ChangedAction(eAniType.RUN);
-                _modelObj.transform.rotation = Quaternion.LookRotation(move);
+                //방향을 받아서 방향에 따른 애니메이션 변화
+                ChangeAnimationToDirection(move);
             }
-        }
+            else
+            {//일반적인 이동시
+                if (move.magnitude == 0)
+                    ChangedAction(eAniType.IDLE);
+                else if (move.magnitude > 0)
+                {
+                    ChangedAction(eAniType.RUN);
+                    _modelObj.transform.rotation = Quaternion.LookRotation(move);
+                }
+            }
 
-        _controller.Move(move * Time.deltaTime * _movSpeed);
+            _controller.Move(move * Time.deltaTime * _movSpeed);
+        }
     }
 
     void ChangeAnimationToDirection(Vector3 dir)
@@ -130,9 +179,39 @@ public class Player : UnitBase
         }
     }
 
+    void ChangeAnimationToDirectionFirstView(Vector3 dir)
+    {
+        if(dir.magnitude == 0)
+        {
+            if(_nowAction != eAniType.ATTACK)
+            {
+                ChangedAction(eAniType.ATTACK);
+                _animControl.SetBool("StartAttack", true);
+            }
+
+            if (_stickLauncher._directionFirst.y >= 0.4f || _stickLauncher._directionFirst.y <= 0.4)
+                transform.Rotate(_stickLauncher._directionFirst * Time.deltaTime);
+        }
+        else
+        {
+            if (dir.z == 0)
+            {
+                if (dir.x > 0)
+                    ChangedAction(eAniType.WALK_LEFT);
+                else if (dir.x < 0)
+                    ChangedAction(eAniType.WALK_RIGHT);
+            }
+            else if (dir.z > 0)
+                ChangedAction(eAniType.RUN);
+            else
+                ChangedAction(eAniType.WALK_BACK);
+        }
+    }
+
     public void InitializeDirection()
     {
-        _modelObj.transform.rotation = Quaternion.identity;
+        if(!IngameManager._instance._firstView)
+            _modelObj.transform.rotation = Quaternion.identity;
     }
 
     public void Fire()

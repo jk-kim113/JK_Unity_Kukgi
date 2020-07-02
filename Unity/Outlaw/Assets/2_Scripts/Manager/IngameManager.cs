@@ -8,6 +8,8 @@ public class IngameManager : MonoBehaviour
 #pragma warning disable 0649
     [SerializeField]
     Text _textTimePhase;
+    [SerializeField]
+    bool _isFirstView = false;
 #pragma warning restore
 
     public enum eStateFlower
@@ -35,6 +37,7 @@ public class IngameManager : MonoBehaviour
     float _timeCheck;
     public eStateFlower _nowGameState { get { return _currentState; } }
 
+    public bool _firstView { get { return _isFirstView; } }
 
     //TimeBody _timeBody;
 

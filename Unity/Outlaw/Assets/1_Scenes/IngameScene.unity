@@ -1232,6 +1232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textTimePhase: {fileID: 1646827733}
+  _isFirstView: 0
 --- !u!4 &895298184
 Transform:
   m_ObjectHideFlags: 0
@@ -1343,7 +1344,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offSet: {x: -18, y: 15, z: 5}
-  _followSpeed: 2.5
+  _firstViewOffSet: {x: 0, y: 3, z: 2}
+  _followSpeed: 10
+  _rotSpeed: 5
 --- !u!1 &998057198
 GameObject:
   m_ObjectHideFlags: 0
