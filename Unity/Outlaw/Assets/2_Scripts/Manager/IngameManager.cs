@@ -19,18 +19,17 @@ public class IngameManager : MonoBehaviour
         SpawnPlayer,
         Start,
         Play,
-        
+        Rewind,
         End,
         Reslut
     }
 
     List<SpawnControl> _spawnPointList = new List<SpawnControl>();
-    Transform _playerSpawnPos;
-    GameObject _prefabPlayer;
+    
+    
     GameObject _stickWindow;
     GameObject _miniStatusWindow;
     MessageBox _msgBox;
-    
 
     Player _player;
     eStateFlower _currentState;
@@ -51,8 +50,6 @@ public class IngameManager : MonoBehaviour
     private void Awake()
     {
         _uniqueInstance = this;
-
-        _prefabPlayer = Resources.Load("Prefabs/Characters/PlayerObject") as GameObject;
     }
 
     private void Start()
@@ -100,6 +97,22 @@ public class IngameManager : MonoBehaviour
                 {
                     GameEnd(false);
                 }
+
+                _timePhase -= Time.deltaTime;
+                if (_timePhase < 0.5)
+                {
+                    Time.timeScale = 0.1f;
+                }
+
+                if (_timePhase < 0)
+                {
+                    _timePhase = 0;
+                    Time.timeScale = 1.0f;
+                    GameRewind();
+                }
+
+                _textTimePhase.text = string.Format("{0:F2}", _timePhase);
+
                 break;
             case eStateFlower.End:
                 _timeCheck += Time.deltaTime;
@@ -109,30 +122,6 @@ public class IngameManager : MonoBehaviour
                 }
                 break;
         }
-
-        //switch(_nowGameState)
-        //{
-        //    case eTypeGameState.GamePlay:
-        //        _timePhase -= Time.deltaTime;
-        //        if(_timePhase < 0.5)
-        //        {
-        //            Time.timeScale = 0.1f;
-        //        }
-
-        //        if(_timePhase < 0)
-        //        {
-        //            _timePhase = 0;
-        //            Time.timeScale = 1.0f;
-        //            _nowGameState = eTypeGameState.GameRewind;
-        //        }
-
-        //        _textTimePhase.text = string.Format("{0:F2}", _timePhase);
-        //        break;
-
-        //    case eTypeGameState.GameRewind:
-        //        _timeBody.StartRewind();
-        //        break;
-        //}
     }
 
     void ListUpSpawnControl()
@@ -171,7 +160,7 @@ public class IngameManager : MonoBehaviour
 
         _msgBox.OpenMessageBox("준비~!~!", true);
         ListUpSpawnControl();
-        _playerSpawnPos = GameObject.Find("PlayerSpawnPoint").transform;
+        PlayerManager._instance.InitSetting();
     }
 
     public void SpawnPlayer()
@@ -180,10 +169,8 @@ public class IngameManager : MonoBehaviour
 
         _timeCheck = 0;
         _miniStatusWindow.SetActive(true);
-        GameObject go = Instantiate(_prefabPlayer, _playerSpawnPos.position, _playerSpawnPos.rotation);
-        _player = go.GetComponent<Player>();
-        CameraController cc = Camera.main.GetComponent<CameraController>();
-        cc.SetPlayer(go);
+
+        _player = PlayerManager._instance.SpawnPlayer();
 
         // 임시
         GameStart();
@@ -192,7 +179,7 @@ public class IngameManager : MonoBehaviour
     public void GameStart()
     {
         _currentState = eStateFlower.Start;
-
+        _timePhase = 8.0f;
         _msgBox.OpenMessageBox("플레이 시작~!~!", true);
         _timeCheck = 0;
     }
@@ -204,6 +191,13 @@ public class IngameManager : MonoBehaviour
         _stickWindow.SetActive(true);
         _msgBox.OpenMessageBox();
         _player.SettingSticks();
+    }
+
+    void GameRewind()
+    {
+        _currentState = eStateFlower.Rewind;
+
+        PlayerManager._instance.StartRewind();
     }
 
     public void GameEnd(bool isWin)

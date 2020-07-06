@@ -22,15 +22,6 @@ public class Player : UnitBase
     MiniStatusWindow _wndPlayerStatus;
 
     eAniType _nowAction;
-    public int _curAction
-    {
-        get { return (int)_nowAction; }
-        set
-        {
-            _nowAction = (eAniType)value;
-            ChangedAction(_nowAction);
-        }
-    }
 
     // Player 기본 정보
     float _runSpeed = 5;
@@ -42,15 +33,22 @@ public class Player : UnitBase
     //bool _isAttack = false;
     int _curBulletCount = 0;
 
-    bool isRewind = false;
-    public bool _isRewinding { set { isRewind = value; } }
-
     public int _finalDamage { get { return _baseAtt; } }
 
     public float _bulletRate { get { return (float)(_limitBulletCount - _curBulletCount) / _limitBulletCount; } }
     //public float _maxBulletCount { get { return _limitBulletCount; } }
 
     public Transform _tfLookPos { get { return _posLook; } }
+
+    // 추가 기능 관련 변수들
+    bool _isRewinding = false;
+    public bool isRewind { get { return _isRewinding; } }
+    List<PointInTime> pointsInTime = new List<PointInTime>();
+    List<MoveInfo> _movePonints = new List<MoveInfo>();
+    bool _isClone = false;
+    int _moveIndex = 0;
+    int _backIndex = 0;
+    Vector3 _dirStick;
 
     private void Awake()
     {
@@ -72,11 +70,9 @@ public class Player : UnitBase
 
     private void Update()
     {
-        //Debug.Log("1" + _nowAction);
         if (_isDead || _nowAction == eAniType.RELOAD
-            || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || isRewind)
+            || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || _isRewinding)
             return;
-        //Debug.Log("2" + _nowAction);
 
         Vector3 move = Vector3.zero;
 
@@ -124,14 +120,34 @@ public class Player : UnitBase
 #if UNITY_EDITOR
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            move = new Vector3(vertical, 0, -horizontal);
-            move = (move.magnitude > 1) ? move.normalized : move;
+            bool _isStickAim = false;
+
+            if(!_isClone)
+            {
+                move = new Vector3(vertical, 0, -horizontal);
+                move = (move.magnitude > 1) ? move.normalized : move;
+                _dirStick = _stickLauncher._direction;
+                _isStickAim = _stickLauncher._isAimMotion;
+                _movePonints.Add(new MoveInfo(move, _dirStick, _isStickAim));
+            }
+            else
+            {
+                if(_moveIndex < _movePonints.Count)
+                {
+                    MoveInfo moveInfo = _movePonints[_moveIndex];
+                    _moveIndex++;
+
+                    move = moveInfo._move;
+                    _isStickAim = moveInfo._isAim;
+                    _dirStick = moveInfo._dirStick;
+                }
+            }
 
             //Vector3 move = _stickMovement._dirMov;
 #else
         Vector3 move = _stickMovement._dirMov;
 #endif
-            if (_stickLauncher._isAimMotion)
+            if (_isStickAim)
             {
                 //방향을 받아서 방향에 따른 애니메이션 변화
                 ChangeAnimationToDirection(move);
@@ -151,6 +167,62 @@ public class Player : UnitBase
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play
+                && IngameManager._instance._nowGameState != IngameManager.eStateFlower.Rewind)
+            return;
+
+        if (_isRewinding)
+            Rewind();
+        else
+            Record();
+    }
+
+    void Rewind()
+    {
+        if (_backIndex < pointsInTime.Count)
+        {
+            PointInTime pointInTime = pointsInTime[_backIndex];
+            _backIndex++;
+            transform.position = pointInTime.position;
+            _modelObj.transform.rotation = pointInTime.rotation;
+            _nowAction = (eAniType)pointInTime.nowAct;
+        }
+        else
+        {
+            StopRewind();
+        }
+    }
+
+    void Record()
+    {
+        //if (pointsInTime.Count > Mathf.Round(10f / Time.fixedDeltaTime))
+        //{
+        //    pointsInTime.RemoveAt(pointsInTime.Count - 1);
+        //}
+
+        pointsInTime.Insert(0, new PointInTime(transform.position, _modelObj.transform.rotation, (int)_nowAction));
+    }
+
+    public void StartRewind()
+    {
+        Debug.Log(string.Format("{0} : {1}", gameObject.name, _movePonints.Count));
+        _isRewinding = true;
+        _isClone = true;
+        Time.timeScale = 1.5f;
+    }
+
+    public void StopRewind()
+    {
+        _isRewinding = false;
+        Time.timeScale = 1.0f;
+        pointsInTime.Clear();
+        _moveIndex = 0;
+        _backIndex = 0;
+        PlayerManager._instance.EndRewind();
+    }
+
     void ChangeAnimationToDirection(Vector3 dir)
     {
         if(dir == Vector3.zero)
@@ -160,7 +232,7 @@ public class Player : UnitBase
                 ChangedAction(eAniType.ATTACK);
                 _animControl.SetBool("StartAttack", true);
             }
-            _modelObj.transform.rotation = Quaternion.LookRotation(_stickLauncher._direction);
+            _modelObj.transform.rotation = Quaternion.LookRotation(_dirStick);
         }
         else
         {//움직일 때

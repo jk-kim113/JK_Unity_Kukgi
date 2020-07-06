@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PointInTime
+public struct PointInTime
 {
     public Vector3 position;
     public Quaternion rotation;
