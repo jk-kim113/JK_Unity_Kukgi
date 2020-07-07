@@ -47,6 +47,8 @@ public class Player : UnitBase
     List<MoveInfo> _movePonints = new List<MoveInfo>();
     bool _isClone = false;
     int _moveIndex = 0;
+    public int _movePointID { get { return _moveIndex; } }
+    public int _moveListCount { get { return _movePonints.Count; } }
     int _backIndex = 0;
     Vector3 _dirStick;
 
@@ -121,7 +123,7 @@ public class Player : UnitBase
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
             bool _isStickAim = false;
-
+            
             if(!_isClone)
             {
                 move = new Vector3(vertical, 0, -horizontal);
@@ -207,10 +209,9 @@ public class Player : UnitBase
 
     public void StartRewind()
     {
-        Debug.Log(string.Format("{0} : {1}", gameObject.name, _movePonints.Count));
         _isRewinding = true;
         _isClone = true;
-        Time.timeScale = 1.5f;
+        Time.timeScale = 2.0f;
     }
 
     public void StopRewind()
@@ -221,6 +222,28 @@ public class Player : UnitBase
         _moveIndex = 0;
         _backIndex = 0;
         PlayerManager._instance.EndRewind();
+    }
+
+    public void ChangeMoveList(int startIndex, int amount, bool isAdd)
+    {
+        if(isAdd)
+        {
+            for (int n = 0; n < amount; n++)
+            {
+                Vector3 movePos = (_movePonints[startIndex - 1]._move + _movePonints[startIndex]._move) / 2;
+                Vector3 stickPos = (_movePonints[startIndex - 1]._dirStick + _movePonints[startIndex]._dirStick) / 2;
+                bool isAim = _movePonints[startIndex - 1]._isAim;
+
+                _movePonints.Insert(startIndex, new MoveInfo(movePos, stickPos, isAim));
+            }
+        }
+        else
+        {
+            for(int n = 0; n <amount; n++)
+            {
+                _movePonints.RemoveAt(startIndex);
+            }
+        }
     }
 
     void ChangeAnimationToDirection(Vector3 dir)
