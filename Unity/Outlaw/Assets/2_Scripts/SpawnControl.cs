@@ -22,12 +22,24 @@ public class SpawnControl : MonoBehaviour
     GameObject _prefabMon;
     float _timeCheck = 0;
     List<GameObject> _spawnMonList = new List<GameObject>();
+    int _nowCreateCount;
 
     public bool _checkRemainingCount { get { return (_maxCreateCount == 0 &&_spawnMonList.Count == 0); } }
 
     private void Awake()
     {
         _prefabMon = Resources.Load("Prefabs/Characters/MonGhost") as GameObject;
+
+        _nowCreateCount = _maxCreateCount;
+    }
+
+    public void ResetCount()
+    {
+        for (int n = 0; n < _spawnMonList.Count; n++)
+            Destroy(_spawnMonList[n].gameObject);
+        _spawnMonList.Clear();
+
+        _maxCreateCount = _nowCreateCount;
     }
 
     private void Update()

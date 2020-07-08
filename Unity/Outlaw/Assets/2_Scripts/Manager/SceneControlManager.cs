@@ -96,7 +96,7 @@ public class SceneControlManager : MonoBehaviour
         aScene = SceneManager.GetSceneByName(sceneName);
         _currentStateLoad = eLoadingState.LoadSceneEnd;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.0f);
 
         if (_nowSceneType == eSceneType.INGAME)
         {// IngameScene일 경우 스테이지를 로드한다, 그리고 SetActiveScene을 StageScene으로 한다
@@ -130,7 +130,7 @@ public class SceneControlManager : MonoBehaviour
 
             aScene = SceneManager.GetSceneByName(StageName + stageNumber.ToString());
             _currentStateLoad = eLoadingState.LoadStageEnd;
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.0f);
         }
 
         SceneManager.SetActiveScene(aScene);

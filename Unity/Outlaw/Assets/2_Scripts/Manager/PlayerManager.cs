@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     int _phaseIndex = 0;
+    public int _nowPhase { get { return _phaseIndex; } }
     List<Player> _spawnedPlayer = new List<Player>();
     GameObject _prefabPlayer;
     Transform _playerSpawnPos;
@@ -20,8 +21,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play
-                && IngameManager._instance._nowGameState != IngameManager.eStateFlower.Rewind)
+        if (IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || _phaseIndex == 1)
             return;
 
         CheckList();
@@ -63,69 +63,50 @@ public class PlayerManager : MonoBehaviour
 
     void SetListSameCount()
     {
-        if (_phaseIndex == 2)
+        if (_phaseIndex == 1)
+            return;
+
+        int firstCount = _spawnedPlayer[_phaseIndex - 2]._moveListCount;
+        int secondCount = _spawnedPlayer[_phaseIndex - 1]._moveListCount;
+
+        Debug.Log("first count : " + firstCount + " / second count : " + secondCount);
+
+        if (firstCount == secondCount)
+            return;
+        else if (firstCount > secondCount)
         {
-            int firstCount = _spawnedPlayer[_phaseIndex - 2]._moveListCount;
-            int secondCount = _spawnedPlayer[_phaseIndex - 1]._moveListCount;
+            int delta = firstCount - secondCount;
+            int term = secondCount / delta;
 
-            Debug.Log("first count : " + firstCount + " / second count : " + secondCount);
-
-            if (firstCount == secondCount)
-                return;
-            else if (firstCount > secondCount)
+            for (int n = term; n < secondCount; n = n + term)
             {
-                int delta = firstCount - secondCount;
-                int term = secondCount / delta;
-
-                for (int n = term; n < secondCount; n = n + term)
-                {
-                    _spawnedPlayer[_phaseIndex - 1].ChangeMoveList(n, 1, true);
-                }
-            }
-            else if(secondCount > firstCount)
-            {
-                int delta = secondCount - firstCount;
-                int term = firstCount / delta;
-
-                for (int n = term; n < firstCount; n = n + term)
-                {
-                    _spawnedPlayer[_phaseIndex - 2].ChangeMoveList(n, 1, true);
-                }
+                _spawnedPlayer[_phaseIndex - 1].ChangeMoveList(n, 1, true);
             }
         }
-        else if (_phaseIndex == 3)
+        else if (secondCount > firstCount)
         {
+            int delta = secondCount - firstCount;
+            int term = firstCount / delta;
 
+            for (int n = 0; n < _phaseIndex - 2; n++)
+                for (int m = term; m < firstCount; m = m + term)
+                    _spawnedPlayer[n].ChangeMoveList(m, 1, true);
         }
 
         for (int n = 0; n < _spawnedPlayer.Count; n++)
-            Debug.Log(_spawnedPlayer[n]._moveListCount);
+            Debug.Log(n + " : " + _spawnedPlayer[n]._moveListCount);
     }
 
     void CheckList()
     {
-        if(_phaseIndex == 2)
-        {
-            int firstID = _spawnedPlayer[_phaseIndex - 2]._movePointID;
-            int currentListCount = _spawnedPlayer[_phaseIndex - 1]._moveListCount;
-            int delta = 0;
-            if (firstID == currentListCount)
-                return;
-            else if (firstID > currentListCount)
-            {
-                delta = firstID - currentListCount;
-                _spawnedPlayer[_phaseIndex - 2].ChangeMoveList(firstID, delta, false);
-            }   
-            else if (currentListCount > firstID)
-            {
-                delta = currentListCount - firstID;
-                _spawnedPlayer[_phaseIndex - 2].ChangeMoveList(firstID, delta, true);
-            }
-        }
-        else if(_phaseIndex == 3)
-        {
+        int firstID = _spawnedPlayer[_phaseIndex - 2]._movePointID;
+        int currentListCount = _spawnedPlayer[_phaseIndex - 1]._moveListCount;
 
-        }
+        if (firstID == currentListCount)
+            return;
+
+        for (int n = 0; n < _phaseIndex - 2; n++)
+            _spawnedPlayer[n].ChangeMoveList(firstID, Mathf.Abs(currentListCount - firstID), firstID < currentListCount);
     }
 
     bool CheckAllEndRewind()

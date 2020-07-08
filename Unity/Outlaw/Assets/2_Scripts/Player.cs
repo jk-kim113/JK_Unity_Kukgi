@@ -65,15 +65,14 @@ public class Player : UnitBase
     }
 
     private void Start()
-    {   
+    {
         _wndPlayerStatus = GameObject.Find("MiniAvatarWindow").GetComponent<MiniStatusWindow>();
         _wndPlayerStatus.InitSetting(_myName, 1, 1, 1);
     }
 
     private void Update()
     {
-        if (_isDead || _nowAction == eAniType.RELOAD
-            || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || _isRewinding)
+        if (_isDead || IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || _isRewinding)
             return;
 
         Vector3 move = Vector3.zero;
@@ -145,6 +144,9 @@ public class Player : UnitBase
                 }
             }
 
+            if (_nowAction == eAniType.RELOAD)
+                return;
+
             //Vector3 move = _stickMovement._dirMov;
 #else
         Vector3 move = _stickMovement._dirMov;
@@ -211,7 +213,6 @@ public class Player : UnitBase
     {
         _isRewinding = true;
         _isClone = true;
-        Time.timeScale = 2.0f;
     }
 
     public void StopRewind()
@@ -221,6 +222,8 @@ public class Player : UnitBase
         pointsInTime.Clear();
         _moveIndex = 0;
         _backIndex = 0;
+        ChangedAction(eAniType.IDLE);
+        _modelObj.transform.rotation = Quaternion.identity;
         PlayerManager._instance.EndRewind();
     }
 
@@ -319,7 +322,8 @@ public class Player : UnitBase
         bullet.InitBulletData(this);
         _curBulletCount++;
 
-        _wndPlayerStatus.SettingBulletSlider(_bulletRate);
+        if(!_isClone)
+            _wndPlayerStatus.SettingBulletSlider(_bulletRate);
 
         _animControl.SetBool("StartAttack", false);
         if (_curBulletCount >= _limitBulletCount)
@@ -330,7 +334,9 @@ public class Player : UnitBase
     {
         _curBulletCount = 0;
         ChangedAction(eAniType.IDLE);
-        _wndPlayerStatus.SettingBulletSlider(1);
+
+        if (!_isClone)
+            _wndPlayerStatus.SettingBulletSlider(1);
     }
 
     public void ChangedAction(eAniType type)
@@ -378,7 +384,8 @@ public class Player : UnitBase
 
             }
 
-            _wndPlayerStatus.SettingHPSlider(_hpRate);
+            if (!_isClone)
+                _wndPlayerStatus.SettingHPSlider(_hpRate);
         }
 
         return _isDead;

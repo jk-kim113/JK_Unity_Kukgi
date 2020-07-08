@@ -9,6 +9,10 @@ public class IngameManager : MonoBehaviour
     [SerializeField]
     Text _textTimePhase;
     [SerializeField]
+    Image _panelSlowEff;
+    [SerializeField]
+    GameObject _replayEffect;
+    [SerializeField]
     bool _isFirstView = false;
 #pragma warning restore
 
@@ -26,10 +30,11 @@ public class IngameManager : MonoBehaviour
 
     List<SpawnControl> _spawnPointList = new List<SpawnControl>();
     
-    
     GameObject _stickWindow;
     GameObject _miniStatusWindow;
     MessageBox _msgBox;
+
+    Transform _canvasTr;
 
     Player _player;
     eStateFlower _currentState;
@@ -38,11 +43,9 @@ public class IngameManager : MonoBehaviour
 
     public bool _firstView { get { return _isFirstView; } }
 
-    //TimeBody _timeBody;
-
     GameObject _miniWnd;
     
-    float _timePhase = 8.0f;
+    float _timePhase = 13.0f;
 
     static IngameManager _uniqueInstance;
     public static IngameManager _instance { get { return _uniqueInstance; } }
@@ -57,6 +60,7 @@ public class IngameManager : MonoBehaviour
         _msgBox = GameObject.FindGameObjectWithTag("MessageBox").GetComponent<MessageBox>();
         _stickWindow = GameObject.FindGameObjectWithTag("StickControllWindow");
         _miniStatusWindow = GameObject.FindGameObjectWithTag("MiniAvatarWindow");
+        _canvasTr = GameObject.Find("IngameUIFrame").transform;
 
         _msgBox.OpenMessageBox();
         _stickWindow.SetActive(false);
@@ -101,18 +105,60 @@ public class IngameManager : MonoBehaviour
                 _timePhase -= Time.deltaTime;
                 if (_timePhase < 0.5)
                 {
-                    Time.timeScale = 0.1f;
+                    _panelSlowEff.gameObject.SetActive(true);
+
+                    if (PlayerManager._instance._nowPhase != 3)
+                    {
+                        _panelSlowEff.color = new Color(_panelSlowEff.color.r, _panelSlowEff.color.g, _panelSlowEff.color.b,
+                                                    _panelSlowEff.color.a + Time.deltaTime * 1.3f);
+                    }
+                        
+                    Time.timeScale = 0.2f;
                 }
 
                 if (_timePhase < 0)
                 {
+                    if (PlayerManager._instance._nowPhase != 3)
+                    {
+                        GameObject go = Instantiate(_replayEffect, _canvasTr);
+                        Destroy(go, 1f);
+                    }   
+
                     _timePhase = 0;
+                    _panelSlowEff.color = new Color(_panelSlowEff.color.r, _panelSlowEff.color.g, _panelSlowEff.color.b, 0);
+                    _panelSlowEff.gameObject.SetActive(false);
                     Time.timeScale = 1.0f;
-                    GameRewind();
+                    if(PlayerManager._instance._nowPhase == 3)
+                    {
+                        if (CheckClearConditions())
+                        {
+                            GameEnd(true);
+                        }
+                        else
+                        {
+                            GameEnd(false);
+                        }
+                    }
+                    else
+                    {
+                        GameRewind();
+                    }
                 }
 
                 _textTimePhase.text = string.Format("{0:F2}", _timePhase);
 
+                break;
+            case eStateFlower.Rewind:
+                Time.timeScale = 3.5f;
+                _timePhase += Time.deltaTime;
+
+                if (_timePhase > 13)
+                {
+                    _timePhase = 13;
+                    Time.timeScale = 1.0f;
+                }
+
+                _textTimePhase.text = string.Format("{0:F2}", _timePhase);
                 break;
             case eStateFlower.End:
                 _timeCheck += Time.deltaTime;
@@ -179,8 +225,8 @@ public class IngameManager : MonoBehaviour
     public void GameStart()
     {
         _currentState = eStateFlower.Start;
-        _timePhase = 8.0f;
-        _msgBox.OpenMessageBox("플레이 시작~!~!", true);
+        _timePhase = 13.0f;
+        _msgBox.OpenMessageBox(PlayerManager._instance._nowPhase + " Pgase 시작~!~!", true);
         _timeCheck = 0;
     }
 
@@ -196,6 +242,9 @@ public class IngameManager : MonoBehaviour
     void GameRewind()
     {
         _currentState = eStateFlower.Rewind;
+
+        for (int n = 0; n < _spawnPointList.Count; n++)
+            _spawnPointList[n].ResetCount();
 
         PlayerManager._instance.StartRewind();
     }
