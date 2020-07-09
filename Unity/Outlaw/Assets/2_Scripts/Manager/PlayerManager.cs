@@ -34,6 +34,8 @@ public class PlayerManager : MonoBehaviour
 
     public Player SpawnPlayer()
     {
+        SetListSameCount();
+
         GameObject go = Instantiate(_prefabPlayer, _playerSpawnPos.position, _playerSpawnPos.rotation);
         Player player = go.GetComponent<Player>();
         _spawnedPlayer.Add(player);
@@ -55,15 +57,17 @@ public class PlayerManager : MonoBehaviour
     public void EndRewind()
     {
         if (CheckAllEndRewind())
-        {
-            SetListSameCount();
             IngameManager._instance.SpawnPlayer();
-        }   
+    }
+
+    public void ResetPlayer()
+    {
+        // Stop Anim 
     }
 
     void SetListSameCount()
     {
-        if (_phaseIndex == 1)
+        if (_phaseIndex <= 1)
             return;
 
         int firstCount = _spawnedPlayer[_phaseIndex - 2]._moveListCount;
@@ -79,9 +83,7 @@ public class PlayerManager : MonoBehaviour
             int term = secondCount / delta;
 
             for (int n = term; n < secondCount; n = n + term)
-            {
                 _spawnedPlayer[_phaseIndex - 1].ChangeMoveList(n, 1, true);
-            }
         }
         else if (secondCount > firstCount)
         {

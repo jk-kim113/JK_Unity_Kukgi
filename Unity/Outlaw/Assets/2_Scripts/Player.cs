@@ -242,7 +242,7 @@ public class Player : UnitBase
         }
         else
         {
-            for(int n = 0; n <amount; n++)
+            for(int n = 0; n < amount; n++)
             {
                 _movePonints.RemoveAt(startIndex);
             }

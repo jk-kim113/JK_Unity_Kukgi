@@ -35,6 +35,7 @@ public class SceneControlManager : MonoBehaviour
     GameObject _prefabLoadingWnd;    
 
     int _nowStageNumber, _oldStageNumber;
+    public int _curStageNum { get { return _nowStageNumber; } }
 
     static SceneControlManager _uniqueInstance;
     public static SceneControlManager _instance { get { return _uniqueInstance; } }

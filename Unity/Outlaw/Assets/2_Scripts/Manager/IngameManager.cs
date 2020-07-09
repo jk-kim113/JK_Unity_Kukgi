@@ -29,10 +29,12 @@ public class IngameManager : MonoBehaviour
     }
 
     List<SpawnControl> _spawnPointList = new List<SpawnControl>();
-    
+
+    GameObject _prefabResultWnd;
     GameObject _stickWindow;
     GameObject _miniStatusWindow;
     MessageBox _msgBox;
+    ResultWindow resultWnd;
 
     Transform _canvasTr;
 
@@ -53,6 +55,8 @@ public class IngameManager : MonoBehaviour
     private void Awake()
     {
         _uniqueInstance = this;
+
+        _prefabResultWnd = Resources.Load("Prefabs/UI/ResultWindowFrame") as GameObject;
     }
 
     private void Start()
@@ -258,6 +262,14 @@ public class IngameManager : MonoBehaviour
             _msgBox.OpenMessageBox("축하합니다~!~!", true);
         else
             _msgBox.OpenMessageBox("실력 부족!!", true);
+
+        for (int n = 0; n < _spawnPointList.Count; n++)
+            _spawnPointList[n].ResetCount();
+
+        GameObject go = Instantiate(_prefabResultWnd);
+        resultWnd = go.GetComponent<ResultWindow>();
+        resultWnd.OpenWindow(isWin);
+        resultWnd.gameObject.SetActive(false);
     }
 
     public void GameResult()
@@ -267,7 +279,7 @@ public class IngameManager : MonoBehaviour
         _msgBox.OpenMessageBox();
         // 모든 몬스터 삭제.
         // 결과창 열기.
-        GameObject go = Resources.Load("Prefabs/UI/ResultWindowFrame") as GameObject;
-        Instantiate(go);
+
+        resultWnd.gameObject.SetActive(true);
     }
 }
