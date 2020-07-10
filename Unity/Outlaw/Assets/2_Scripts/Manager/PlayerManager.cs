@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviour
         if (IngameManager._instance._nowGameState != IngameManager.eStateFlower.Play || _phaseIndex == 1)
             return;
 
-        CheckList();
+        //CheckList();
     }
 
     public void InitSetting()
@@ -62,7 +62,10 @@ public class PlayerManager : MonoBehaviour
 
     public void ResetPlayer()
     {
-        // Stop Anim 
+        for (int n = 0; n < _spawnedPlayer.Count; n++)
+        {
+            _spawnedPlayer[n].ChangedAction(UnitBase.eAniType.IDLE);
+        }
     }
 
     void SetListSameCount()

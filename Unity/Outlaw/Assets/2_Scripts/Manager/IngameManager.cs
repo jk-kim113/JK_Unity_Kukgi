@@ -257,6 +257,8 @@ public class IngameManager : MonoBehaviour
     {
         _currentState = eStateFlower.End;
 
+        PlayerManager._instance.ResetPlayer();
+
         _timeCheck = 0;
         if(isWin)
             _msgBox.OpenMessageBox("축하합니다~!~!", true);
