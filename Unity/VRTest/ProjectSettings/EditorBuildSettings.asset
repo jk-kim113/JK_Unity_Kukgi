@@ -4,7 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/1_Scenes/VRFPS.unity
+    guid: be60c560eb31e3e4da09272e81cde787
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 459becdbe4154cc4aa6a74b9e5a1920f,
       type: 2}
