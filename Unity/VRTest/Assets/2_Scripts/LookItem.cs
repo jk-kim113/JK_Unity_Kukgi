@@ -23,6 +23,6 @@ public class LookItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnGvrPointerHover(PointerEventData eventData)
     {
-        Debug.Log("Hovering!!");
+        //Debug.Log("Hovering!!");
     }
 }
