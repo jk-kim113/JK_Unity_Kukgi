@@ -10,12 +10,16 @@ public class PlayerControl : MonoBehaviour
         LOOK_AT
     }
 
+#pragma warning disable 0649
     [SerializeField]
     eTypeMove _movType = eTypeMove.WAY_POINT;
     [SerializeField]
     float _movSpeed = 1;
     [SerializeField]
     float _damping = 3;
+    [SerializeField]
+    Animator _animWeapon;
+#pragma warning restore
 
     Transform _tfCamera;
     CharacterController _cc;
@@ -40,6 +44,8 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
+        _animWeapon.enabled = !_isStopping;
+
         if (_isStopping)
             return;
 
@@ -79,6 +85,11 @@ public class PlayerControl : MonoBehaviour
         {
             _nextIdx = (++_nextIdx >= _movPoints.Length) ? 1 : _nextIdx;
         }
+    }
+
+    void Hit()
+    {
+        Debug.Log("플레이어가 공격 당함");
     }
 
 }

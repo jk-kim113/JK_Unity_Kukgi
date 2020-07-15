@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class CrossHair : MonoBehaviour
 {
+#pragma warning disable 0649
     [SerializeField]
     float _durSpeed = 0.2f;     // 레티클이 커지는 속도
     [SerializeField]
     float _minSize = 0.4f;      // 레티클 최소 크기(최초 크기)
     [SerializeField]
     float _maxSize = 0.6f;      // 레티클 최대 크기
+#pragma warning restore
 
     Image _crossHair;
     float _timeStart;           // 레티클이 커지기 시작하는 시간을 저장.
@@ -31,29 +33,29 @@ public class CrossHair : MonoBehaviour
         transform.localScale = Vector3.one * _minSize;
     }
 
-    bool _isAnim;
-
+    
+    //bool _isAnim;
     private void Update()
     {
         if(_isGazzing)
         {
-            if(!_isAnim)
-                _anim.Play("Gaze");
+            //if(!_isAnim)
+            //    _anim.Play("Gaze");
 
-            _isAnim = true;
-            //float t = (Time.time - _timeStart) / _durSpeed;
-            //_crossHair.color = Color.red;
-            //transform.localScale = Vector3.one * Mathf.Lerp(_minSize, _maxSize, t);
+            //_isAnim = true;
+            float t = (Time.time - _timeStart) / _durSpeed;
+            _crossHair.color = Color.red;
+            transform.localScale = Vector3.one * Mathf.Lerp(_minSize, _maxSize, t);
         }
         else
         {
-            if (_isAnim)
-                _anim.Play("NotGaze");
+            //if (_isAnim)
+            //    _anim.Play("NotGaze");
 
-            _isAnim = false;
-            //_crossHair.color = Color.white;
-            //transform.localScale = Vector3.one * _minSize;
-            //_timeStart = Time.time;
+            //_isAnim = false;
+            _crossHair.color = Color.white;
+            transform.localScale = Vector3.one * _minSize;
+            _timeStart = Time.time;
         }
     }
 }
