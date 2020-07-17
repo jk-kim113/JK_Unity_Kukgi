@@ -38,13 +38,13 @@ public class EyeCast : MonoBehaviour
         if (Physics.Raycast(_ray, out _hit, _dist, layMask))
         {
             PlayerControl._isStop = true;
-            //CrossHair._isGaze = true;
+            CrossHair._isGaze = true;
         }
-        //else
-        //{
-        //    PlayerControl._isStop = false;
-        //    //CrossHair._isGaze = false;
-        //}
+        else
+        {
+            //playercontrol._isstop = false;
+            CrossHair._isGaze = false;
+        }
 
         CheckGazeButton();
     }

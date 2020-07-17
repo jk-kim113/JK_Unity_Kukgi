@@ -12,10 +12,22 @@ public class IngameManager : MonoBehaviour
         OK
     }
 
-    eDifficultyType _prevDifficultType;
+    public enum eTrackState
+    {
+        Start        = 1,
+        SelectMenu,
+        MonsterAppearance
+        
+    }
+
     eDifficultyType _currDifficultType;
+    eTrackState _currTrackState;
+    public eTrackState _nowTrackState { get { return _currTrackState; } }
 
     GateControl _gateCtrl;
+    MainUIControl _mainUICtrl;
+
+    float _huntTime = 60.0f;
 
     static IngameManager _uniqueInstance;
     public static IngameManager _instance { get { return _uniqueInstance; } }
@@ -28,16 +40,52 @@ public class IngameManager : MonoBehaviour
     private void Start()
     {
         _gateCtrl = GameObject.Find("Gate").GetComponent<GateControl>();
+        _mainUICtrl = GameObject.Find("MainUI").GetComponent<MainUIControl>();
     }
 
-    public void StopPoint(int id)
+    private void Update()
     {
-        switch(id)
+        switch(_currTrackState)
         {
-            case 2:
-                _gateCtrl.OnOffMenuWindow(true);
+            case eTrackState.MonsterAppearance:
+
+                _huntTime -= Time.deltaTime;
+                _mainUICtrl.OnOffTimeText(true);
+                _mainUICtrl.ShowTimeText(_huntTime);
+
+                if(_huntTime < 0)
+                {
+                    _mainUICtrl.OnOffTimeText(false);
+                    PlayerControl._isStop = false;
+                }
+
                 break;
         }
+    }
+
+    public void ActOnTrackPoint(int id)
+    {
+        switch ((eTrackState)id)
+        {
+            case eTrackState.Start:
+
+                PlayerControl._isStop = false;
+
+                break;
+            case eTrackState.SelectMenu:
+
+                PlayerControl._isStop = true;
+                _gateCtrl.OnOffMenuWindow(true);
+
+                break;
+            case eTrackState.MonsterAppearance:
+
+                PlayerControl._isStop = true;
+
+                break;
+        }
+
+        _currTrackState = (eTrackState)id;
     }
 
     public void SelectDifficulty(eDifficultyType type)  
@@ -50,7 +98,6 @@ public class IngameManager : MonoBehaviour
         }
         else
         {
-            _prevDifficultType = _currDifficultType;
             _currDifficultType = type;
         }
     }

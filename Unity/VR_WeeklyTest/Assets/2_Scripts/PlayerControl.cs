@@ -77,14 +77,9 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("MovePoint"))
+        if (other.CompareTag("TrackPoint"))
         {
-            _nextIdx = (++_nextIdx >= _movPoints.Length) ? 1 : _nextIdx;
-        }
-        else if(other.CompareTag("StopPoint"))
-        {
-            _isStopping = true;
-            IngameManager._instance.StopPoint(_nextIdx);
+            IngameManager._instance.ActOnTrackPoint(_nextIdx);
             _nextIdx = (++_nextIdx >= _movPoints.Length) ? 1 : _nextIdx;
         }
     }

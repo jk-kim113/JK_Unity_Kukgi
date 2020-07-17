@@ -11,8 +11,6 @@ public class GateControl : MonoBehaviour
     GameObject _menuWnd;
     [SerializeField]
     GameObject _okButton;
-    [SerializeField]
-    float _damping = 3.0f;
 #pragma warning restore
 
     Animation _anim;

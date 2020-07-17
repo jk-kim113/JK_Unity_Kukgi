@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - MovePoint
-  - StopPoint
   - OKBUTTON
+  - TrackPoint
   layers:
   - Default
   - TransparentFX
@@ -18,7 +17,7 @@ TagManager:
   - 
   - ITEMBOX
   - MENU
-  - 
+  - MONSTERHEAD
   - 
   - 
   - 
