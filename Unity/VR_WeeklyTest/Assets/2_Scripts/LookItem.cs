@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class LookItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IGvrPointerHoverHandler
 {
+    [SerializeField]
+    GameObject _resultWnd;
+
     public void OnLookItemBox(bool isLookAt)
     {
         Debug.Log(isLookAt);
@@ -14,6 +17,7 @@ public class LookItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         PlayerControl._isStop = true;
+        _resultWnd.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)

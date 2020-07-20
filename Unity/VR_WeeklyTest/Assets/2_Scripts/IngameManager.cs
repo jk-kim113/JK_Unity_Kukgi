@@ -16,7 +16,8 @@ public class IngameManager : MonoBehaviour
     {
         Start        = 1,
         SelectMenu,
-        MonsterAppearance
+        MonsterAppearance,
+        Result
         
     }
 
@@ -27,7 +28,7 @@ public class IngameManager : MonoBehaviour
     GateControl _gateCtrl;
     MainUIControl _mainUICtrl;
 
-    float _huntTime = 60.0f;
+    float _huntTime = 10.0f;
 
     static IngameManager _uniqueInstance;
     public static IngameManager _instance { get { return _uniqueInstance; } }
@@ -79,6 +80,11 @@ public class IngameManager : MonoBehaviour
 
                 break;
             case eTrackState.MonsterAppearance:
+
+                PlayerControl._isStop = true;
+
+                break;
+            case eTrackState.Result:
 
                 PlayerControl._isStop = true;
 
