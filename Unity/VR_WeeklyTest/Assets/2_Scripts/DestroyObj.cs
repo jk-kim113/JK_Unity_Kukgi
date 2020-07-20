@@ -8,6 +8,7 @@ public class DestroyObj : MonoBehaviour
     {
         if(!other.CompareTag("Player"))
         {
+            IngameManager._instance._deathNum++;
             Destroy(other.gameObject);
         }
     }

@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class EyeCast : MonoBehaviour
 {
+#pragma warning disable 0649
     [SerializeField]
     float _dist = 10.0f;
     [SerializeField]
     float _timeSelect = 1.0f;
+#pragma warning restore
 
     Ray _ray;
     RaycastHit _hit;

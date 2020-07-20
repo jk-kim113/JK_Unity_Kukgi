@@ -47,6 +47,7 @@ public class Monster : MonoBehaviour
         {
             Instantiate(_prefabScoreEffect, transform.position, transform.rotation);
             Destroy(gameObject);
+            IngameManager._instance._killNum++;
         }
     }
 }

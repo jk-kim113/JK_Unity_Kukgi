@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class IngameManager : MonoBehaviour
 {
+#pragma warning disable 0649
+    [SerializeField]
+    ResultWindow _resultWnd;
+#pragma warning restore
+
     public enum eDifficultyType
     {
         Hard        = 0,
@@ -29,6 +34,12 @@ public class IngameManager : MonoBehaviour
     MainUIControl _mainUICtrl;
 
     float _huntTime = 10.0f;
+
+    int _killCount = 0;
+    public int _killNum { get { return _killCount; } set { _killCount = value; } }
+
+    int _deathCount = 0;
+    public int _deathNum { get { return _deathCount; } set { _deathCount = value; } }
 
     static IngameManager _uniqueInstance;
     public static IngameManager _instance { get { return _uniqueInstance; } }
@@ -87,6 +98,8 @@ public class IngameManager : MonoBehaviour
             case eTrackState.Result:
 
                 PlayerControl._isStop = true;
+                _resultWnd.gameObject.SetActive(true);
+                _resultWnd.OpenWnd(_killCount, _deathCount);
 
                 break;
         }
