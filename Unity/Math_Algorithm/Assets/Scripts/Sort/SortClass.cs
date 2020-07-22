@@ -185,13 +185,102 @@ public class SortClass
 
         SortTest._instance.PrintState("정렬 끝");
     }
-}
 
+    public static void MergeSort(int[] arry, int start, int end, bool isAscend = false)
+    {
+        if(start < end)
+        {
+            int m = (start + end) / 2;
+
+            MergeSort(arry, start, m);
+            MergeSort(arry, m + 1, end);
+
+            Merge(arry, start, end, m, isAscend);
+        }
+    }
+
+    static void Merge(int[] arry, int start, int end, int merge, bool isAscend = false)
+    {
+        List<int> tempList = new List<int>();
+        int i = start, j = merge + 1, copy = 0;
+
+        while(i <= merge && j <= end)
+        {
+            if(arry[i] < arry[j])
+            {
+                if (!isAscend)
+                    tempList.Add(arry[j++]);
+                else
+                    tempList.Add(arry[i++]);
+
+            }
+            else if(arry[i] > arry[j])
+            {
+                if (!isAscend)
+                    tempList.Add(arry[i++]);
+                else
+                    tempList.Add(arry[j++]);
+            }
+        }
+
+        while (i <= merge)
+        {
+            tempList.Add(arry[i++]);
+        }
+        while (j <= end)
+        {
+            tempList.Add(arry[j++]);
+        }
+
+        for (int n = start; n <= end; n++)
+        {
+            arry[n] = tempList[copy++];
+        }
+    }
+
+    public static void QuickSort(int[] arry, int start, int end, bool isAscend = false)
+    {
+        int pivot = arry[start];
+        int bs = start, be = end;
+
+        while(start < end)
+        {
+            while(pivot <= arry[end] && start < end)
+            {
+                end--;
+            }
+
+            if (start > end)
+                break;
+
+            while(pivot >= arry[start] && start < end)
+            {
+                start++;
+            }
+
+            if (start > end)
+                break;
+
+            int temp = arry[start];
+            arry[start] = arry[end];
+            arry[end] = temp;
+        }
+
+        int change = arry[bs];
+        arry[bs] = arry[start];
+        arry[start] = change;
+
+        if (bs < start)
+            QuickSort(arry, bs, start - 1, isAscend);
+        if(be > end)
+            QuickSort(arry, start + 1, be, isAscend);
+    }
+}
 
 /* 정렬 알고리즘
  *      정렬 알고리즘의 종류
  *          비교 정렬 알고리즘
- *              삽입 선택 퀵 분열합병 셀 등이 있다.
+ *              삽입, 선택, 퀵, 분열 합병, 셀 등이 있다.
  *          비교하지 않는 알고리즘
  *              비둘기집 정렬, 버킷 정렬, LSD기수 정렬 등이 있다.
  *          기타 정렬 알고리즘

@@ -33,7 +33,13 @@ public class SortTest : MonoBehaviour
 
         //StartCoroutine(SortClass.SeletedSort(arr));
         //StartCoroutine(SortClass.InsertSort(arr, true));
-        StartCoroutine(SortClass.BubbleSort(arr));
+        //StartCoroutine(SortClass.BubbleSort(arr));
+
+        //SortClass.MergeSort(arr, 0, arr.Length - 1);
+
+        SortClass.QuickSort(arr, 0, arr.Length - 1);
+        PrintArray();
+        PrintState("정렬 끝");
     }
 
     public void PrintArray()
