@@ -40,6 +40,7 @@ public class SortTest : MonoBehaviour
         SortClass.QuickSort(arr, 0, arr.Length - 1);
         PrintArray();
         PrintState("정렬 끝");
+
     }
 
     public void PrintArray()

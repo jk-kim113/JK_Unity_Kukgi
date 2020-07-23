@@ -275,6 +275,7 @@ public class SortClass
         if(be > end)
             QuickSort(arry, start + 1, be, isAscend);
     }
+
 }
 
 /* 정렬 알고리즘
