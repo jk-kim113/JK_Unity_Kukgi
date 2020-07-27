@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/LearnDataStructureScene.unity
+- path: Assets/Scenes/LearnTreeScene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
