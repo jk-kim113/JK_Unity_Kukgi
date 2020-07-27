@@ -41,6 +41,8 @@ public abstract class Action : MonoBehaviour
         }
     }
 
+    public abstract void StartCheck();
+
     protected abstract bool IsEmpty();
 
     protected abstract void FillEmpty();

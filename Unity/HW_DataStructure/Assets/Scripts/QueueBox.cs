@@ -70,4 +70,10 @@ public class QueueBox : Action
     {
         return _qData.Dequeue();
     }
+
+    public override void StartCheck()
+    {
+        _isChceck = true;
+        _element = 0;
+    }
 }

@@ -59,7 +59,7 @@ public class StackBox : Action
 
     protected override void FillEmpty()
     {
-        if (_element >= 3)
+        if(_element < 0)
             _element = 0;
 
         _sData.Push(400 - 100 * ++_element);
@@ -75,5 +75,11 @@ public class StackBox : Action
     public override int GetData()
     {
         return _sData.Pop();
+    }
+
+    public override void StartCheck()
+    {
+        _isChceck = true;
+        _element = 0;
     }
 }

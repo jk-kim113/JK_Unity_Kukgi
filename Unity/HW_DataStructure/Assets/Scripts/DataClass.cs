@@ -37,7 +37,7 @@ public class DataClass : MonoBehaviour
                 {
                     _chatElement = Instantiate(_chatElement, _chatWndTr).GetComponent<ChatElement>();
                     _chatElement.SetChatting(_lData.Get(idx).GetData().ToString());
-                    _lData.Get(idx)._isChceck = true;
+                    _lData.Get(idx).StartCheck();
                     _lData.Get(idx).ResetText();
                     return;
                 }
