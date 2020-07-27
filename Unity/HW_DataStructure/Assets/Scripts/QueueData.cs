@@ -29,6 +29,7 @@ public class QueueData<T>
     {
         if (isEmpty)
         {
+            _header = new Node<T>();
             _header._element = element;
         }
         else

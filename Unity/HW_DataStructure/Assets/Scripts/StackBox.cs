@@ -10,18 +10,70 @@ public class StackBox : Action
     Text[] _textBoxArr;
 #pragma warning restore
 
-    StackData<int> _sData = new StackData<int>();
+    public StackData<int> _sData = new StackData<int>();
+
+    int _element = 0;
 
     private void Awake()
     {
-        _sData.Push(100);
-        _sData.Push(200);
-        _sData.Push(300);
+        _sData.Push(400 - 100 * ++_element);
+        _sData.Push(400 - 100 * ++_element);
+        _sData.Push(400 - 100 * ++_element);
     }
 
     private void Start()
     {
+        ResetText();
+    }
+
+    protected override bool IsEmpty()
+    {
+        return _sData.isEmpty;
+    }
+
+    public override void ResetText()
+    {   
         for (int n = 0; n < _textBoxArr.Length; n++)
-            _textBoxArr[n].text = _sData.Pop().ToString();
+        {
+            _textBoxArr[n].gameObject.SetActive(false);
+        }
+
+        List<int> inner = new List<int>();
+        int size = _sData.size;
+        for (int n = 0; n < size; n++)
+        {
+            inner.Add(_sData.Pop());
+        }
+
+        for(int n = inner.Count - 1; n >= 0; n--)
+        {
+            _sData.Push(inner[n]);
+        }
+
+        for (int n = 0; n < inner.Count; n++)
+        {
+            _textBoxArr[n].text = inner[n].ToString();
+            _textBoxArr[n].gameObject.SetActive(true);
+        }
+    }
+
+    protected override void FillEmpty()
+    {
+        if (_element >= 3)
+            _element = 0;
+
+        _sData.Push(400 - 100 * ++_element);
+        ResetText();
+
+        if (_sData.size >= 3)
+        {
+            _isChceck = false;
+            _element = 0;
+        }
+    }
+
+    public override int GetData()
+    {
+        return _sData.Pop();
     }
 }

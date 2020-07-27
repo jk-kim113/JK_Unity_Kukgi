@@ -8,6 +8,10 @@ public class DataClass : MonoBehaviour
 #pragma warning disable 0649
     [SerializeField]
     Text[] _textBoxArr;
+    [SerializeField]
+    Transform _chatWndTr;
+    [SerializeField]
+    ChatElement _chatElement;
 #pragma warning restore
 
     LinkedData<Action> _lData = new LinkedData<Action>();
@@ -24,7 +28,29 @@ public class DataClass : MonoBehaviour
 
     public void Use(Action.eBoxType type)
     {
-        //TODO 
+        int idx = 0;
+        while (idx < _lData.size)
+        {
+            if (!_lData.Get(idx)._isEmpty)
+            {
+                if (_lData.Get(idx)._nowBoxType == type)
+                {
+                    _chatElement = Instantiate(_chatElement, _chatWndTr).GetComponent<ChatElement>();
+                    _chatElement.SetChatting(_lData.Get(idx).GetData().ToString());
+                    _lData.Get(idx)._isChceck = true;
+                    _lData.Get(idx).ResetText();
+                    return;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                idx++;
+            }
+        }
     }
 
     public void Add(Action data)
@@ -37,16 +63,22 @@ public class DataClass : MonoBehaviour
         RewriteTextBox();
     }
 
-    public void Delete(Action data)
+    public void Delete(Action.eBoxType type)
     {
-        int idx = 0;
-        while(_lData.Get(idx)._nowBoxType != data._nowBoxType)
+        if (_lData.isEmpty)
+            return;
+
+        int idx = -1;
+        for(int n = 0; n < _lData.size; n++)
         {
-            idx++;
+            if (_lData.Get(n)._nowBoxType == type)
+                idx = n;
         }
 
-        _lData.Remove(idx);
+        if (idx < 0)
+            return;
 
+        _lData.Remove(idx);
         RewriteTextBox();
     }
 

@@ -12,17 +12,62 @@ public class QueueBox : Action
 
     public QueueData<int> _qData = new QueueData<int>();
 
+    int _element = 0;
+
     private void Awake()
     {
-        _qData.Enqueue(1);
-        _qData.Enqueue(2);
-        _qData.Enqueue(3);
-        _qData.Enqueue(4);
+        _qData.Enqueue(++_element);
+        _qData.Enqueue(++_element);
+        _qData.Enqueue(++_element);
+        _qData.Enqueue(++_element);
     }
 
     private void Start()
     {
-        for (int n = 0; n < _textBoxArr.Length; n++)
-            _textBoxArr[n].text = (n + 1).ToString();
+        ResetText();
+    }
+
+    protected override bool IsEmpty()
+    {
+        return _qData.isEmpty;
+    }
+
+    public override void ResetText()
+    {
+        for(int n = 0; n < _textBoxArr.Length; n++)
+        {
+            _textBoxArr[n].gameObject.SetActive(false);
+        }
+
+        List<int> inner = new List<int>();
+        int size = _qData.size;
+        for (int n = 0; n < size; n++)
+        {
+            inner.Add(_qData.Dequeue());
+            _qData.Enqueue(inner[n]);
+        }
+        
+        for (int n = 0; n < inner.Count; n++)
+        {
+            _textBoxArr[n].text = inner[n].ToString();
+            _textBoxArr[n].gameObject.SetActive(true);
+        }
+    }
+
+    protected override void FillEmpty()
+    {
+        if (_element >= 4)
+            _element = 0;
+
+        _qData.Enqueue(++_element);
+        ResetText();
+
+        if (_qData.size >= 4)
+            _isChceck = false;
+    }
+
+    public override int GetData()
+    {
+        return _qData.Dequeue();
     }
 }

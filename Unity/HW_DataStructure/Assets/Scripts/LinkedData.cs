@@ -26,6 +26,7 @@ public class LinkedData<T>
 
         if (_header == null)
         {
+            _header = new Node<T>();
             _header = temp;
         }
         else
@@ -44,21 +45,34 @@ public class LinkedData<T>
 
     public void Remove(int idx)
     {
-        if(size == 1)
+        if(idx == 0)
         {
-            _header = null;
+            _header = _header._next;
         }
-        else
+        else if(idx == 1)
         {
-            Node<T> previous = _header;
-
-            for (int n = 0; n < idx - 1; n++)
-            {
-                previous = previous._next;
-            }
-
-            previous._next = previous._next._next;
+            _header._next = _header._next._next;
         }
+        else if(idx == 2)
+        {
+            _header._next._next = null;
+        }
+
+        //if(size == 1)
+        //{
+        //    _header = null;
+        //}
+        //else
+        //{
+        //    Node<T> previous = _header;
+
+        //    for (int n = 0; n < idx - 1; n++)
+        //    {
+        //        previous = previous._next;
+        //    }
+
+        //    previous._next = previous._next._next;
+        //}
 
         _size--;
     }
