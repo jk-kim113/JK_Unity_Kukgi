@@ -1,36 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TreeStructureTest : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        TreeTest<string> tt = new TreeTest<string>();
-        TreeNode<string> rootNode = new TreeNode<string>("Root");
-        tt.Add(rootNode);
-        TreeNode<string> node0 = new TreeNode<string>("node0");
-        tt.Add(node0);
-        TreeNode<string> node1 = new TreeNode<string>("node1");
-        tt.Add(node1);
-        TreeNode<string> node01 = new TreeNode<string>("node01");
-        tt.Add(node01);
-        TreeNode<string> node02 = new TreeNode<string>("node02");
-        tt.Add(node02);
-        //TreeNode<string> node10 = new TreeNode<string>("node10");
-        //tt.Add(node10);
-        //tt.Add("Root");
-        //tt.Add("node0");
-        //tt.Add("node1");
-        //tt.Add("node01");
-        //tt.Add("node02");
-        //tt.Add("node10");
-        //tt.Add("node11");
+        //int[] numArr = new int[10];
+        //BinaryTree<int> bt = new BinaryTree<int>();
 
-        //Debug.Log(tt.size);
+        //for(int n = 0; n < 10; n++)
+        //{
+        //    numArr[n] = Random.Range(0, 100);
+        //    Debug.Log(numArr[n]);
+        //    if (!bt.Add(numArr[n]))
+        //        n--;
+        //}
 
-        tt.IteratorDown(tt.Root());
+        //Debug.Log("=================");
+
+        //bt._Root = bt.Remove(numArr[Random.Range(0, 10)], bt.Root());
+        //bt.IteratorDown(bt.Root());
+
+        
+        Debug.Log(Convert.ToString( 2, 2));
+
     }
 
 }
