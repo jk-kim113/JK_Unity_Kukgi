@@ -29,13 +29,14 @@ public class HeapTree<T>
         {
             _pointer = _root;
             string bitcount = Convert.ToString(_count + 1, 2);
-            for(int n = 0; n < bitcount.Length; n++)
+            for(int n = 1; n < bitcount.Length; n++)
             {
                 if(bitcount[n] == '0')
                 {
                     if(_pointer._left == null)
                     {
                         _pointer._left = new BinaryNode<T>();
+                        _pointer._left._parent = _pointer;
                     }
                     _pointer = _pointer._left;
                 }
@@ -44,16 +45,17 @@ public class HeapTree<T>
                     if(_pointer._right == null)
                     {
                         _pointer._right = new BinaryNode<T>();
+                        _pointer._right._parent = _pointer;
                     }
                     _pointer = _pointer._right;
                 }
             }
-            _pointer._data = data;
-            while(true)
+            _pointer._data = newNode._data;
+            Comparer<T> comparer = Comparer<T>.Default;
+            while (true)
             {
                 if (_pointer == _root)
                     break;
-                Comparer<T> comparer = Comparer<T>.Default;
                 if (comparer.Compare(_pointer._data, _pointer._parent._data) == -1)
                 {
                     T temp = _pointer._data;
@@ -72,25 +74,24 @@ public class HeapTree<T>
     {
         //T output = _root._data;
         _pointer = _root;
-        string bitcount = Convert.ToString(_count + 1, 2);
-        for (int n = 0; n < bitcount.Length; n++)
+        string bitcount = Convert.ToString(_count, 2);
+        for (int n = 1; n < bitcount.Length; n++)
         {
             if (bitcount[n] == '0')
-                if (_pointer._left == null)
-                    _pointer = _pointer._left;
+                _pointer = _pointer._left;
             else
-                if (_pointer._right == null)
-                    _pointer = _pointer._right;
+                _pointer = _pointer._right;
         }
         _root._data = _pointer._data;
         try
         {
+            // delete last filled space in heap
             if (_pointer._parent._left == _pointer)
                 _pointer._parent._left = null;
             else
                 _pointer._parent._right = null;
             _count--;
-            Heapify();
+            Heapify(); // percolate down new root
         }
         catch
         {
@@ -127,5 +128,20 @@ public class HeapTree<T>
             else
                 break;
         }
+    }
+
+    public void IteratorDown(BinaryNode<T> parent)
+    {
+        if (parent != null)
+        {
+            UnityEngine.Debug.Log(parent._data);
+            IteratorDown(parent._left);
+            IteratorDown(parent._right);
+        }
+    }
+
+    public BinaryNode<T> Root()
+    {
+        return _root;
     }
 }
