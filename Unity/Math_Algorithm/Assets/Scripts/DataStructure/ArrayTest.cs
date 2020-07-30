@@ -24,6 +24,7 @@ public class ArrayTest<T>
         }
     }
 
+
     public int size
     {
         get 

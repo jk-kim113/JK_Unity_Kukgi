@@ -15,9 +15,8 @@ public class TreeStructureTest : MonoBehaviour
     int[] _numArr = new int[15];
     int _count = 0;
 
-    AVLTree<int> at = new AVLTree<int>();
+    BSTarray btArr = new BSTarray();
 
-    // Start is called before the first frame update
     void Start()
     {
         #region Binary Searching
@@ -60,17 +59,51 @@ public class TreeStructureTest : MonoBehaviour
         //ht.IteratorDown(ht.Root());
         #endregion
 
-        for (int n = 0; n < 15; n++)
+        #region AVL Tree
+
+        //AVLTree<int> at = new AVLTree<int>();
+
+        //for (int n = 0; n < 15; n++)
+        //{
+        //    int random = Random.Range(1, 100);
+        //    _numArr[n] = random;
+        //    Debug.Log(random);
+        //    at.Add(random);
+        //}
+
+        //Debug.Log("=================");
+        //at.IteratorDown(at.Root());
+
+        //Debug.Log("=================");
+        //at.Delete(_numArr[3]);
+        //at.Delete(_numArr[6]);
+        //at.Delete(_numArr[9]);
+        //at.Delete(_numArr[12]);
+
+        //at.IteratorDown(at.Root());
+
+        #endregion
+
+        for (int n = 0; n < _numArr.Length; n++)
         {
-            _numArr[n] = Random.Range(1, 100);
+            _numArr[n] = Random.Range(1, 101);
             _txtRandomNum[n].text = _numArr[n].ToString();
         }
+            
+
     }
 
     public void AddButton()
     {
         _txtRandomNum[_count].color = Color.red;
-        at.Add(_numArr[_count++]);
-    }
+        btArr.Add(_numArr[_count++]);
 
+        for (int n = 0; n < _txtBillBoard.Length; n++)
+        {
+            if (btArr._Arr[n] < 0)
+                _txtBillBoard[n].text = "0";
+            else
+                _txtBillBoard[n].text = btArr._Arr[n].ToString();
+        }
+    }
 }

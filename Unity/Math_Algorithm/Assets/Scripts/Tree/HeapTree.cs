@@ -5,13 +5,12 @@ using System.Collections.Generic;
 public class HeapTree<T>
 {
     BinaryNode<T> _root;
-    BinaryNode<T> _pointer;
+    
     int _count;
 
     public HeapTree()
     {
         _root = null;
-        _pointer = null;
         _count = 0;
     }
 
@@ -20,18 +19,19 @@ public class HeapTree<T>
         BinaryNode<T> newNode = new BinaryNode<T>();
         newNode._data = data;
 
+        BinaryNode<T> _pointer;
+
         if (_root == null)
-        {
             _root = newNode;
-            _count++;
-        }
         else
         {
+            // 비어있는 자리를 2진수를 이용하여 찾아가서 빈자리에 data를 입력
             _pointer = _root;
             string bitcount = Convert.ToString(_count + 1, 2);
             for(int n = 1; n < bitcount.Length; n++)
             {
-                if(bitcount[n] == '0')
+                //자리 index(root가 1번)를 2진수로 바꾼 뒤 root를 기준으로 2번째 자리가 0이면 왼쪽 1이면 오른쪽으로  
+                if (bitcount[n] == '0')
                 {
                     if(_pointer._left == null)
                     {
@@ -51,6 +51,8 @@ public class HeapTree<T>
                 }
             }
             _pointer._data = newNode._data;
+
+            // 현재 위치에서부터 부모로 올라가면서 data값(key)이 작으면 부모의 data와 치환 
             Comparer<T> comparer = Comparer<T>.Default;
             while (true)
             {
@@ -66,12 +68,14 @@ public class HeapTree<T>
                 else
                     break;
             }
-            _count++;
         }
+
+        _count++;
     }
 
     public void Remove()
     {
+        BinaryNode<T> _pointer;
         //T output = _root._data;
         _pointer = _root;
         string bitcount = Convert.ToString(_count, 2);
@@ -83,6 +87,7 @@ public class HeapTree<T>
                 _pointer = _pointer._right;
         }
         _root._data = _pointer._data;
+
         try
         {
             // delete last filled space in heap
@@ -101,6 +106,7 @@ public class HeapTree<T>
 
     void Heapify()
     {
+        BinaryNode<T> _pointer;
         BinaryNode<T> compare;
         _pointer = _root;
         Comparer<T> comparer = Comparer<T>.Default;

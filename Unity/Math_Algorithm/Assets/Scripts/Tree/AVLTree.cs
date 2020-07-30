@@ -5,8 +5,6 @@ using System;
 public class AVLTree<T>
 {
     BinaryNode<T> _root;
-    int _count = 0;
-    List<T> _dataGroup = new List<T>();
 
     public void Add(T data)
     {
@@ -17,9 +15,6 @@ public class AVLTree<T>
             _root = newNode;
         else
             _root = RecursiveInsert(_root, newNode);
-
-        _count++;
-        AllNumber();
     }
 
     private BinaryNode<T> RecursiveInsert(BinaryNode<T> current, BinaryNode<T> node)
@@ -121,32 +116,69 @@ public class AVLTree<T>
         }
     }
 
+    public void Delete(T data)
+    {
+        _root = Delete(_root, data);
+    }
+
+    private BinaryNode<T> Delete(BinaryNode<T> current, T data)
+    {
+        Comparer<T> comparer = Comparer<T>.Default;
+        BinaryNode<T> parent;
+
+        if (current == null)
+            return null;
+        else
+        {
+            //left subtree
+            if (comparer.Compare(data, current._data) == -1)
+            {
+                current._left = Delete(current._left, data);
+                if (balance_factor(current) == -2)//here
+                    if (balance_factor(current._right) <= 0)
+                        current = RotateRR(current);
+                    else
+                        current = RotateRL(current);
+            }
+            //right subtree
+            else if (comparer.Compare(data, current._data) == 1)
+            {
+                current._right = Delete(current._right, data);
+                if (balance_factor(current) == 2)
+                    if (balance_factor(current._left) >= 0)
+                        current = RotateLL(current);
+                    else
+                        current = RotateLR(current);
+            }
+            //if target is found
+            else
+            {
+                if (current._right != null)
+                {
+                    //delete its inorder successor
+                    parent = current._right;
+                    while (parent._left != null)
+                        parent = parent._left;
+
+                    current._data = parent._data;
+                    current._right = Delete(current._right, parent._data);
+                    if (balance_factor(current) == 2)//rebalancing
+                        if (balance_factor(current._left) >= 0)
+                            current = RotateLL(current);
+                        else
+                            current = RotateLR(current);
+                }
+                else
+                {   //if current.left != null
+                    return current._left;
+                }
+            }
+        }
+        return current;
+    }
+
     public BinaryNode<T> Root()
     {
         return _root;
-    }
-
-    public void AllNumber()
-    {
-        _dataGroup.Clear();
-        
-        for (int m = 1; m <= _count; m++)
-        {
-            BinaryNode<T> _pointer = _root;
-            string bitcount = Convert.ToString(m + 1, 2);
-            for (int n = 1; n < bitcount.Length; n++)
-            {
-                if (bitcount[n] == '0')
-                    _pointer = _pointer._left;
-                else
-                    _pointer = _pointer._right;
-            }
-            _dataGroup.Add(_pointer._data);
-        }
-
-        for(int n = 0; n < _dataGroup.Count; n++)
-        {
-            UnityEngine.Debug.Log(_dataGroup[n]);
-        }
     }
 }
