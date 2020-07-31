@@ -39,31 +39,51 @@ public class BSTarray
                 {
                     compare = 2 * compare;
                     if (_arr[compare - 1] < 0)
-                    {
-                        _arr[compare - 1] = data;
                         break;
-                    }   
                 }
                 else if (_arr[compare - 1] < data)
                 {
                     compare = 2 * compare + 1;
                     if (_arr[compare - 1] < 0)
-                    {
-                        _arr[compare - 1] = data;
                         break;
-                    }   
                 }
                 else
-                {
                     return;
-                }
             }
+
+            _arr[compare - 1] = data;
         }
 
         _count++;
     }
 
-    public void Remove(int data)
+    public void Remove(int index)
+    {
+        _arr[index - 1] = int.MinValue;
+
+        if (_arr[2 * index - 1] < 0 && _arr[2 * index] < 0)
+        {
+            index = 2 * index;
+            while(_arr[2 * index - 1] < 0)
+            {
+                _arr[index - 1] = int.MinValue;
+            }
+        }
+
+        // 너무 어려움
+        ReArrange(index);
+    }
+
+    void ReArrange(int index)
+    {
+        if (_arr[2 * index - 1] < 0)
+        {
+            _arr[index - 1] = _arr[2 * index];
+            ReArrange(2 * index);
+        }
+    }
+
+    public int FindIndex(int data)
     {
         int compare = 1;
 
@@ -73,13 +93,13 @@ public class BSTarray
             {
                 compare = 2 * compare;
                 if (_arr[compare - 1] == data)
-                    _arr[compare - 1] = int.MinValue;
+                    return compare;
             }
             else if (_arr[compare - 1] < data)
             {
                 compare = 2 * compare + 1;
                 if (_arr[compare - 1] == data)
-                    _arr[compare - 1] = int.MinValue;
+                    return compare;
             }
         }
     }

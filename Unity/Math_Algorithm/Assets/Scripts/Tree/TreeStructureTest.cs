@@ -7,23 +7,31 @@ public class TreeStructureTest : MonoBehaviour
 {
 #pragma warning disable 0649
     [SerializeField]
-    Text[] _txtBillBoard;
+    GameObject _billboardRoot;
     [SerializeField]
-    Text[] _txtRandomNum;
+    GameObject _numberRoot;
 #pragma warning restore
 
-    int[] _numArr = new int[15];
+    int[] _numArr = new int[31];
     int _count = 0;
 
     BSTarray btArr = new BSTarray();
 
+    Text[] _txtBillBoard;
+    Text[] _txtRandomNum;
+
+    BST<int> bst = new BST<int>();
+
     void Start()
     {
+        _txtBillBoard = _billboardRoot.GetComponentsInChildren<Text>();
+        _txtRandomNum = _numberRoot.GetComponentsInChildren<Text>();
+
         #region Binary Searching
-        //int[] numArr = new int[10];
+        //int[] numArr = new int[15];
         //BinaryTree<int> bt = new BinaryTree<int>();
 
-        //for(int n = 0; n < 10; n++)
+        //for (int n = 0; n < numArr.Length; n++)
         //{
         //    numArr[n] = Random.Range(0, 100);
         //    Debug.Log(numArr[n]);
@@ -33,7 +41,10 @@ public class TreeStructureTest : MonoBehaviour
 
         //Debug.Log("=================");
 
-        //bt._Root = bt.Remove(numArr[Random.Range(0, 10)], bt.Root());
+        //bt._Root = bt.Remove(numArr[3], bt.Root());
+        //bt._Root = bt.Remove(numArr[6], bt.Root());
+        //bt._Root = bt.Remove(numArr[9], bt.Root());
+        //bt._Root = bt.Remove(numArr[12], bt.Root());
         //bt.IteratorDown(bt.Root());
         #endregion
 
@@ -84,26 +95,47 @@ public class TreeStructureTest : MonoBehaviour
 
         #endregion
 
-        for (int n = 0; n < _numArr.Length; n++)
-        {
-            _numArr[n] = Random.Range(1, 101);
-            _txtRandomNum[n].text = _numArr[n].ToString();
-        }
-            
+        //for (int n = 0; n < _numArr.Length; n++)
+        //{
+        //    _numArr[n] = Random.Range(1, 101);
+        //    _txtRandomNum[n].text = _numArr[n].ToString();
+        //}
 
+
+        bst.TraversalOrder = BST<int>.TraversalMode.PreOrder;
+
+        for (int n = 0; n < 15; n++)
+        {
+            int random = Random.Range(1, 100);
+            _numArr[n] = random;
+            _txtRandomNum[n].text = _numArr[n].ToString();
+            //Debug.Log(random);
+            //bst.Add(random);
+        }
+
+        Debug.Log("===============");
+
+        //int[] temp = new int[_numArr.Length];
+        //bst.CopyTo(temp);
+        //for(int n = 0; n < _txtBillBoard.Length; n++)
+        //{
+        //    _txtBillBoard[n].text = temp[n].ToString();
+        //}
     }
 
     public void AddButton()
     {
         _txtRandomNum[_count].color = Color.red;
-        btArr.Add(_numArr[_count++]);
+        bst.Add(_numArr[_count++]);
 
+        int[] temp = new int[_txtBillBoard.Length];
+        bst.CopyTo(temp);
         for (int n = 0; n < _txtBillBoard.Length; n++)
         {
-            if (btArr._Arr[n] < 0)
-                _txtBillBoard[n].text = "0";
-            else
-                _txtBillBoard[n].text = btArr._Arr[n].ToString();
+            if(temp[n] > 0)
+                _txtBillBoard[n].color = Color.blue;
+
+            _txtBillBoard[n].text = temp[n].ToString();
         }
     }
 }

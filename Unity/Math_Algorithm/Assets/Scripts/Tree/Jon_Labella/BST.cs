@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class BST<T> : ICollection<T> where T : IComparable
 { // JON LABELLA
@@ -80,6 +81,7 @@ public class BST<T> : ICollection<T> where T : IComparable
         {
             this.head = node; //set node as root of the tree
             node.Tree = this;
+            node.Index = 1; // TODO Delete Later
             size++;
         }
         else
@@ -95,6 +97,8 @@ public class BST<T> : ICollection<T> where T : IComparable
                 if (node.Parent.LeftChild == null)
                 {
                     node.Parent.LeftChild = node; //insert in left
+                    node.Index = node.Parent.Index * 2; // TODO Delete Later
+                    //UnityEngine.Debug.Log(node.Index);
                     size++;
                     node.Tree = this; //assign node to this binary tree
                 }
@@ -109,6 +113,8 @@ public class BST<T> : ICollection<T> where T : IComparable
                 if (node.Parent.RightChild == null)
                 {
                     node.Parent.RightChild = node; //insert in right
+                    node.Index = node.Parent.Index * 2 + 1; // TODO Delete Later
+                    //UnityEngine.Debug.Log(node.Index);
                     size++;
                     node.Tree = this; //assign node to this binary tree
                 }
@@ -183,7 +189,7 @@ public class BST<T> : ICollection<T> where T : IComparable
     public virtual void CopyTo(T[] array, int startIndex)
     {
         IEnumerator<T> enumerator = this.GetEnumerator();
-
+        
         for (int i = startIndex; i < array.Length; i++)
         {
             if (enumerator.MoveNext())
@@ -545,6 +551,7 @@ public class BST<T> : ICollection<T> where T : IComparable
             //Build queue
             traverseQueue = new Queue<BTNode<T>>();
             visitNode(this.tree.Root);
+            Rearrange(); // TODO Delete Later
         }
 
         private void visitNode(BTNode<T> node)
@@ -556,6 +563,39 @@ public class BST<T> : ICollection<T> where T : IComparable
                 traverseQueue.Enqueue(node);
                 visitNode(node.LeftChild);
                 visitNode(node.RightChild);
+            }
+        }
+
+        // TODO Delete Later
+        void Rearrange()
+        {
+            BTNode<T>[] tempArr = new BTNode<T>[63];
+
+            while(traverseQueue.Count > 0)
+            {
+                BTNode<T> temp = traverseQueue.Dequeue();
+
+                if (temp.Index - 1 > 62)
+                {
+                    UnityEngine.Debug.Log(temp.Index);
+                    continue;
+                }
+                tempArr[temp.Index - 1] = temp;
+            }
+
+            traverseQueue.Clear();
+
+            for (int n = 0; n < tempArr.Length; n++)
+            {
+                if(tempArr[n] == null)
+                {
+                    BTNode<T> temp = new BTNode<T>(default(T));
+                    traverseQueue.Enqueue(temp);
+                }
+                else
+                {
+                    traverseQueue.Enqueue(tempArr[n]);
+                }
             }
         }
 

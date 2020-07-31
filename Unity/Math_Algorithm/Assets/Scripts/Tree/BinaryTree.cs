@@ -55,7 +55,7 @@ public class BinaryTree<T>
                     }
                 }
             }
-        }    
+        }
     }
 
     public BinaryNode<T> Remove(T data, BinaryNode<T> node)
@@ -75,10 +75,27 @@ public class BinaryTree<T>
             else if (node._right == null)
                 return node._left;
 
-            return node._left;
+            // node with two children: Get the inorder successor (smallest in the right subtree)  
+            node._data = MinValue(node._right);
+
+            // Delete the inorder successor  
+            node._right = Remove(node._data, node._right);
         }
 
         return node;
+    }
+
+    T MinValue(BinaryNode<T> node)
+    {
+        T minv = node._data;
+
+        while (node._left != null)
+        {
+            minv = node._left._data;
+            node = node._left;
+        }
+
+        return minv;
     }
 
     public void IteratorDown(BinaryNode<T> parent)

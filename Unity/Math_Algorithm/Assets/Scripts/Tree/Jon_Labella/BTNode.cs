@@ -9,6 +9,14 @@ public class BTNode<T> where T : IComparable
     private BTNode<T> rightChild;
     private BTNode<T> parent;
     private BST<T> tree;
+    private int index; // TODO Delete Later
+
+    // TODO Delete Later
+    public virtual int Index
+    {
+        get { return index; }
+        set { this.index = value; }
+    }
 
     /// <summary>
     /// The value stored at the node
