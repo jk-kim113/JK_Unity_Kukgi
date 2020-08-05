@@ -8,11 +8,16 @@
 
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
+
+            //Dissolve properties
+            _DissolveTexture("Dissolve Texutre", 2D) = "white" {}
+            _Amount("Amount", Range(0,1)) = 0
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
+                Cull Off //Fast way to turn your material double-sided
 
         CGPROGRAM
         #pragma surface surf Standard
@@ -31,11 +36,19 @@
         half _Metallic;
         fixed4 _Color;
         
+        //Dissolve properties
+        sampler2D _DissolveTexture;
+        half _Amount;
+
         UNITY_INSTANCING_BUFFER_START(Props)
         UNITY_INSTANCING_BUFFER_END(Props)
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
+            //Dissolve function
+            half dissolve_value = tex2D(_DissolveTexture, IN.uv_MainTex).r;
+            clip(dissolve_value - _Amount);
+
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             fixed3 n = UnpackNormal(tex2D(_BumpTex, IN.uv_BumpTex));
 

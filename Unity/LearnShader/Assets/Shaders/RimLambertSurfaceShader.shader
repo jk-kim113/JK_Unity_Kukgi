@@ -38,9 +38,10 @@
             fixed3 n = UnpackNormal(tex2D(_BumpTex, IN.uv_BumpTex));
             float rim = dot(o.Normal, IN.viewDir);
 
-            o.Albedo = pow(1 - rim, _RimPower) * _RimColor.rgb;
+            o.Albedo = c.rgb;
+            //o.Albedo = pow(1 - rim, _RimPower) * _RimColor.rgb;
             o.Normal = n;
-            //o.Emission = pow(1 - rim, _RimPower) * _RimColor.rgb;
+            o.Emission = pow(1 - rim, _RimPower) * _RimColor.rgb;
             o.Alpha = c.a;
         }
         ENDCG
