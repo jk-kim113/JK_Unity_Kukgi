@@ -35,7 +35,7 @@
             float2 uv_DistortionMap;
 
             float3 viewDir;
-            float4 screenPos;
+            float4 screenPos; // 화면 좌표를 받아 올 때 사용
 
             float3 worldRefl;
             INTERNAL_DATA
@@ -59,10 +59,13 @@
 
             float3 refcolor = tex2D(_MainTex, IN.uv_MainTex);
 
+            float3 screenUV = IN.screenPos.rgb / IN.screenPos.a;
+            float3 refraction = tex2D(_GrabTexture, (screenUV.xy + o.Normal.xy * 0.1));
+
             float rim = saturate(dot(o.Normal, IN.viewDir));
             rim = pow(1 - rim, 1.5);
 
-            o.Emission = (refcolor * rim) * 0.5;
+            o.Emission = (refcolor * rim + refraction) * 0.5;
             o.Alpha = 1;
 
         }
