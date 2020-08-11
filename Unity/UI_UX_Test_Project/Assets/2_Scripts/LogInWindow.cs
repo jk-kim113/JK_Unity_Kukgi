@@ -66,6 +66,6 @@ public class LogInWindow : MonoBehaviour
         _isDownBtnEnter = false;
         _btnEnter.transform.localScale = _scaleBtnEnter;
         _btnEnter.GetComponent<Image>().color = _originColorBtnEnter;
+        SceneControlManager._instance.SceneChange("LobbyScene");
     }
-
 }
