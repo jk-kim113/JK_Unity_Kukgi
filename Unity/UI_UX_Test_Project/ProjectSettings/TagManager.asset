@@ -8,6 +8,7 @@ TagManager:
   - PlayerInfoWindow
   - ShopWindow
   - InvenWindow
+  - ExitButton
   layers:
   - Default
   - TransparentFX

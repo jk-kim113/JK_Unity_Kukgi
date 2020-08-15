@@ -3,32 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResultWindow : MonoBehaviour
+public class ResultWindow : BaseWindow
 {
 #pragma warning disable 0649
     [SerializeField]
-    GameObject _btnExit;
+    DownSizeUpButton _btnExit;
     [SerializeField]
-    GameObject _wnd;
+    GameObject _wndObj;
 #pragma warning restore
-
-    Vector3 _originSizeBtnExit;
 
     private void Start()
     {
-        _originSizeBtnExit = _btnExit.transform.localScale;
+        _btnExit.InitButton(this);
     }
 
-    #region Exit Button Trigger Function
-    public void DownExitButton()
+    public override void ExitButton()
     {
-        _btnExit.transform.localScale = _originSizeBtnExit * 1.2f;
+        _wndObj.SetActive(false);
     }
-
-    public void UpExitButton()
-    {
-        _btnExit.transform.localScale = _originSizeBtnExit;
-        _wnd.SetActive(false);
-    }
-    #endregion
 }

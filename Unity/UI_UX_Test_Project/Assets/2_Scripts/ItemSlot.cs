@@ -54,7 +54,7 @@ public class ItemSlot : MonoBehaviour
     public void DownButton()
     {
         _currentImg.sprite = _selectImg;
-        _owner.ShowSelectItem(_itemID);
+        
         _owner.SelectSlot(_slotID);
     }
 }

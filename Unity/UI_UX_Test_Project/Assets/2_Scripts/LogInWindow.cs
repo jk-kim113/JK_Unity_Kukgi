@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LogInWindow : MonoBehaviour
 {
@@ -66,6 +67,6 @@ public class LogInWindow : MonoBehaviour
         _isDownBtnEnter = false;
         _btnEnter.transform.localScale = _scaleBtnEnter;
         _btnEnter.GetComponent<Image>().color = _originColorBtnEnter;
-        SceneControlManager._instance.SceneChange("LobbyScene");
+        SceneManager.LoadScene("LobbyScene");
     }
 }

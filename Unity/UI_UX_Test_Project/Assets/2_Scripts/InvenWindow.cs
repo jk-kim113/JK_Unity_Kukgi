@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InvenWindow : MonoBehaviour
+public class InvenWindow : BaseWindow
 {
 #pragma warning disable 0649
-    [SerializeField]
-    GameObject _btnExit;
     [SerializeField]
     GameObject _rootSlotObj;
     [SerializeField]
@@ -16,16 +14,16 @@ public class InvenWindow : MonoBehaviour
     Image _btnUse;
     [SerializeField]
     Color _selectBtnUse;
+    [SerializeField]
+    DownSizeUpButton _btnExit;
 #pragma warning restore
 
     InvenSlot[] _arrInvenSlot;
-    Vector3 _originSizeBtnExit;
 
     Color _originBtnUse;
 
     private void Start()
-    {
-        _originSizeBtnExit = _btnExit.transform.localScale;
+    {   
         _originBtnUse = _btnUse.color;
 
         _arrInvenSlot = _rootSlotObj.GetComponentsInChildren<InvenSlot>();
@@ -34,6 +32,7 @@ public class InvenWindow : MonoBehaviour
             _arrInvenSlot[n].InitSlot(this, n);
 
         _wndObj.SetActive(false);
+        _btnExit.InitButton(this);
     }
 
     public void SelectSlot(int id)
@@ -60,16 +59,8 @@ public class InvenWindow : MonoBehaviour
         _btnUse.color = _originBtnUse;
     }
 
-    #region Exit Button Trigger Function
-    public void DownExitButton()
+    public override void ExitButton()
     {
-        _btnExit.transform.localScale = _originSizeBtnExit * 1.2f;
-    }
-
-    public void UpExitButton()
-    {
-        _btnExit.transform.localScale = _originSizeBtnExit;
         _wndObj.SetActive(false);
     }
-    #endregion
 }

@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInfoWindow : MonoBehaviour
+public class PlayerInfoWindow : BaseWindow
 {
 #pragma warning disable 0649
     [SerializeField]
-    GameObject _btnExit;
+    DownSizeUpButton _btnExit;
 #pragma warning restore
 
     Animator _animCtrl;
-
-    Vector3 _originSizeBtnExit;
 
     private void Awake()
     {
@@ -20,7 +18,7 @@ public class PlayerInfoWindow : MonoBehaviour
 
     private void Start()
     {
-        _originSizeBtnExit = _btnExit.transform.localScale;
+        _btnExit.InitButton(this);
     }
 
     public void UpDownWindow()
@@ -28,16 +26,8 @@ public class PlayerInfoWindow : MonoBehaviour
         _animCtrl.SetTrigger("Move");
     }
 
-    #region Exit Button Trigger Function
-    public void DownExitButton()
+    public override void ExitButton()
     {
-        _btnExit.transform.localScale = _originSizeBtnExit * 1.2f;
-    }
-
-    public void UpExitButton()
-    {
-        _btnExit.transform.localScale = _originSizeBtnExit;
         _animCtrl.SetTrigger("Move");
     }
-    #endregion
 }
