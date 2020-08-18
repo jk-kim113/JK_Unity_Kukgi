@@ -30,4 +30,14 @@ public abstract class TableBase
     {
         return _sheetData[index.ToString()][columnName];
     }
+
+    public int GetToInt(int index, string columnName)
+    {
+        return int.Parse(_sheetData[index.ToString()][columnName]);
+    }
+
+    public float GetToFloat(int index, string columnName)
+    {
+        return float.Parse(_sheetData[index.ToString()][columnName]);
+    }
 }

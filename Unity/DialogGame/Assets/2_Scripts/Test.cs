@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
-    void Start()
+    [SerializeField]
+    Text _textBox;
+
+    int _diIndex = 1;
+
+    public void ClickButton()
     {
-        Debug.Log(JsonManager._instance.GetToStr("Dialog", 37, "Sentences"));
-        Debug.Log(JsonManager._instance.GetToStr("Scenario", 20, "StartIndex"));
+        _textBox.text = JsonManager._instance.GetTable("Dialog").GetToStr(_diIndex++, "Sentences");
+        //Debug.Log(JsonManager._instance.GetTable("Scenario").GetToInt(_diIndex++, "StartIndex"));
     }
 }
