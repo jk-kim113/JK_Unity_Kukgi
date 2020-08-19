@@ -9,6 +9,7 @@ public class Dialog : TableBase
         Index,
         Episode,
         Paragraph,
+        ImageName,
         Name,
         Sentences,
         SentencesPosition,

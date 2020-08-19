@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public abstract class TableBase
 {
@@ -26,18 +27,70 @@ public abstract class TableBase
         }
     }
 
-    public string GetToStr(int index, string columnName)
+    //public string GetToStr(int index, string columnName)
+    //{
+    //    return _sheetData[index.ToString()][columnName];
+    //}
+
+    //public int GetToInt(int index, string columnName)
+    //{
+    //    return int.Parse(_sheetData[index.ToString()][columnName]);
+    //}
+
+    //public float GetToFloat(int index, string columnName)
+    //{
+    //    return float.Parse(_sheetData[index.ToString()][columnName]);
+    //}
+
+    string GetValue(int key, string subKey)
     {
-        return _sheetData[index.ToString()][columnName];
+        string strKey = key.ToString();
+        string findVal = string.Empty;
+        
+        if (_sheetData.ContainsKey(strKey))
+            findVal = _sheetData[strKey][subKey];
+
+        return findVal;
     }
 
-    public int GetToInt(int index, string columnName)
+    public string ToS(int key, string subKey)
     {
-        return int.Parse(_sheetData[index.ToString()][columnName]);
+        return GetValue(key, subKey);
     }
 
-    public float GetToFloat(int index, string columnName)
+    public int ToI(int key, string subKey)
     {
-        return float.Parse(_sheetData[index.ToString()][columnName]);
+        int val = 0;
+        int.TryParse(GetValue(key, subKey), out val);
+
+        return val;
+    }
+
+    public float ToF(int key, string subKey)
+    {
+        float val = 0;
+        float.TryParse(GetValue(key, subKey), out val);
+
+        return val;
+    }
+
+    public int FindCount(string val, string subKey)
+    {
+        int count = 0;
+        foreach(string key in _sheetData.Keys)
+        {
+            if (_sheetData[key][subKey].CompareTo(val) == 0)
+                count++;
+        }
+
+        return count;
+    }
+
+    public int Length
+    {
+        get
+        {
+            return _sheetData.Count;
+        }
     }
 }

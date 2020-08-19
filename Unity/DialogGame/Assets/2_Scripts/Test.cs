@@ -6,13 +6,23 @@ using UnityEngine.UI;
 public class Test : MonoBehaviour
 {
     [SerializeField]
-    Text _textBox;
+    Image _image;
+    [SerializeField]
+    Text _text;
 
-    int _diIndex = 1;
+    int _index = 1;
 
-    public void ClickButton()
+    private void Start()
     {
-        _textBox.text = JsonManager._instance.GetTable("Dialog").GetToStr(_diIndex++, "Sentences");
-        //Debug.Log(JsonManager._instance.GetTable("Scenario").GetToInt(_diIndex++, "StartIndex"));
+        _index = 1;
+        TableManager._instance.LoadAll();
+    }
+
+    public void ClickBtn()
+    {
+        _image.sprite = ResourcePoolManager._instance.GetImage(
+                            TableManager._instance.Get(eTableType.Dialog).ToS(_index, "ImageName"));
+
+        _text.text = TableManager._instance.Get(eTableType.Dialog).ToS(_index++, "Sentences");
     }
 }
