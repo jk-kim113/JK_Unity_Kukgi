@@ -10,14 +10,28 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
     {
         base.Init();
 
-        for(int n = 1; n <= TableManager._instance.Get(eTableType.ImageData).Length; n++)
-        {
-            if(!_imageData.ContainsKey(TableManager._instance.Get(eTableType.ImageData).ToS(n, "ImageName")))
-            {
-                Sprite sp = Resources.Load<Sprite>(TableManager._instance.Get(eTableType.ImageData).ToS(n, "Location"));
+        ResourceAllLoad();
+    }
 
-                _imageData.Add(TableManager._instance.Get(eTableType.ImageData).ToS(n, "ImageName"), sp);
-            }
+
+    public void ResourceAllLoad()
+    {
+        //for (int n = 1; n <= TableManager._instance.Get(eTableType.ImageData).Length; n++)
+        //{
+        //    if (!_imageData.ContainsKey(TableManager._instance.Get(eTableType.ImageData).ToS(n, "ImageName")))
+        //    {
+        //        Sprite sp = Resources.Load<Sprite>(TableManager._instance.Get(eTableType.ImageData).ToS(n, "Location"));
+
+        //        _imageData.Add(TableManager._instance.Get(eTableType.ImageData).ToS(n, "ImageName"), sp);
+        //    }
+        //}
+
+        TableBase imageTable = TableManager._instance.Get(eTableType.ImageData);
+
+        foreach(string key in imageTable._datas.Keys)
+        {
+            Sprite image = Resources.Load<Sprite>(imageTable._datas[key]["Location"]);
+            _imageData.Add(imageTable._datas[key]["ImageName"], image);
         }
     }
 

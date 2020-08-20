@@ -7,6 +7,14 @@ public abstract class TableBase
     // 해당 테이블의 정보를 저장하는 곳
     protected Dictionary<string, Dictionary<string, string>> _sheetData;
 
+    public Dictionary<string, Dictionary<string, string>> _datas
+    {
+        get
+        {
+            return _sheetData;
+        }
+    }
+
     /// <summary>
     /// 테이블 파일을 정보를 읽어와서 저장소에 저장하는 함수
     /// </summary>
@@ -48,7 +56,14 @@ public abstract class TableBase
         string findVal = string.Empty;
         
         if (_sheetData.ContainsKey(strKey))
-            findVal = _sheetData[strKey][subKey];
+        {
+            if (_sheetData[strKey].ContainsKey(subKey))
+                findVal = _sheetData[strKey][subKey];
+            else
+                UnityEngine.Debug.LogWarning("Wrong SubKey : " + subKey);
+        }
+        else
+            UnityEngine.Debug.LogWarning("Wrong Key : " + strKey);
 
         return findVal;
     }
@@ -84,13 +99,5 @@ public abstract class TableBase
         }
 
         return count;
-    }
-
-    public int Length
-    {
-        get
-        {
-            return _sheetData.Count;
-        }
     }
 }

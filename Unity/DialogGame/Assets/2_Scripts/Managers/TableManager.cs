@@ -18,6 +18,8 @@ public class TableManager : TSingleton<TableManager>
     protected override void Init()
     {
         base.Init();
+
+        LoadAll();
     }
 
     TableBase Load<T>(eTableType type) where T : TableBase, new()

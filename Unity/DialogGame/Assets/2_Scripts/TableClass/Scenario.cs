@@ -10,6 +10,7 @@ public class Scenario : TableBase
         Episode,
         StageName,
         StartIndex,
+        ImageName,
 
         max
     }
