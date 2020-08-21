@@ -13,7 +13,6 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
         ResourceAllLoad();
     }
 
-
     public void ResourceAllLoad()
     {
         //for (int n = 1; n <= TableManager._instance.Get(eTableType.ImageData).Length; n++)

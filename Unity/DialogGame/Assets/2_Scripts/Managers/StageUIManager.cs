@@ -23,9 +23,13 @@ public class StageUIManager : MonoBehaviour
     Text _textEpisode;
 #pragma warning restore
 
+    Coroutine _writeTextCoroutine;
+
     private void Awake()
     {
         _uniqueInstance = this;
+        _textStory.transform.parent.gameObject.SetActive(false);
+        _imgCharacter.gameObject.SetActive(false);
     }
 
     public void SetBG(Sprite bg)
@@ -35,7 +39,7 @@ public class StageUIManager : MonoBehaviour
 
     public void SetCharacter(Sprite charac)
     {
-        if(charac ==null)
+        if(charac == null)
             _imgCharacter.gameObject.SetActive(false);
         else
         {
@@ -55,21 +59,35 @@ public class StageUIManager : MonoBehaviour
         _textEpisode.text = epi;
     }
 
-    public void SetNarration(string narration)
+    public void SetNotification(string notice)
     {
         OnOffTextWnd(true);
-        StartCoroutine(WriteText(_textNarration, narration));
+        _textNarration.text = notice;
     }
 
-    public void SetStory(string story)
+    public void SetNarration(string narration, bool isImmediate)
+    {
+        OnOffTextWnd(true);
+        _textNarration.text = string.Empty;
+        if (isImmediate)
+            _textNarration.text = narration;
+        else
+            _writeTextCoroutine = StartCoroutine(WriteText(_textNarration, narration));
+    }
+
+    public void SetStory(string story, bool isImmediate)
     {
         OnOffTextWnd(false);
-        StartCoroutine(WriteText(_textStory, story));
+        _textStory.text = string.Empty;
+        if (isImmediate)
+            _textStory.text = story;
+        else
+            _writeTextCoroutine = StartCoroutine(WriteText(_textStory, story));
     }
 
     IEnumerator WriteText(Text text, string str)
     {
-        text.text = "";
+        text.text = string.Empty;
         int index = 0;
         char[] charArr = str.ToCharArray();
 
@@ -88,5 +106,10 @@ public class StageUIManager : MonoBehaviour
     {
         _textNarration.transform.parent.gameObject.SetActive(isNarration);
         _textStory.transform.parent.gameObject.SetActive(!isNarration);
+    }
+
+    public void StopWrite()
+    {
+        StopCoroutine(_writeTextCoroutine);
     }
 }

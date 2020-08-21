@@ -29,7 +29,10 @@ public class LobyUIManager : MonoBehaviour
         _stageBtnArr = _rootStageBtn.GetComponentsInChildren<StageButton>();
         for (int n = 0; n < _stageBtnArr.Length; n++)
             _stageBtnArr[n].SettingBtn(n + 1);
+    }
 
+    private void Start()
+    {
         SetLobbyUI(_currentPage);
     }
 
@@ -42,7 +45,11 @@ public class LobyUIManager : MonoBehaviour
         foreach(string key in tb._datas.Keys)
         {
             if (tb._datas[key]["Episode"].CompareTo(stageIndex.ToString()) == 0)
+            {
+                _stageBtnArr[id].OriginImage();
                 _stageBtnArr[id++].WriteText(tb._datas[key]["StageName"]);
+            }
+                
 
             if (id >= _stageBtnArr.Length)
                 break;
