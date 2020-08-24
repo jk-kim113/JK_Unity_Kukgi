@@ -5,6 +5,19 @@ using UnityEngine.UI;
 
 public class GoButton : MonoBehaviour
 {
+    public enum eSceneType
+    {
+        Start,
+        Lobby,
+
+        max
+    }
+
+#pragma warning disable 0649
+    [SerializeField]
+    eSceneType _secneType;
+#pragma warning restore
+
     Image _img;
 
     private void Awake()
@@ -25,6 +38,14 @@ public class GoButton : MonoBehaviour
     public void UpBtn()
     {
         _img.sprite = ResourcePoolManager._instance.GetImage("GoNormalBtn");
-        LobbyManager._instance.GoStage();
+        switch(_secneType)
+        {
+            case eSceneType.Start:
+                StartManager._instance.SetPlayerName();
+                break;
+            case eSceneType.Lobby:
+                LobbyManager._instance.GoStage();
+                break;
+        }
     }
 }

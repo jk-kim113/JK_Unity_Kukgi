@@ -21,6 +21,14 @@ public class StageUIManager : MonoBehaviour
     Text _textStory;
     [SerializeField]
     Text _textEpisode;
+    [SerializeField]
+    GameObject _storyMode;
+    [SerializeField]
+    GameObject _gameMode;
+    [SerializeField]
+    GameObject[] _player;
+    [SerializeField]
+    GameObject[] _com;
 #pragma warning restore
 
     Coroutine _writeTextCoroutine;
@@ -28,6 +36,7 @@ public class StageUIManager : MonoBehaviour
     private void Awake()
     {
         _uniqueInstance = this;
+        SetGameMode(false);
         _textStory.transform.parent.gameObject.SetActive(false);
         _imgCharacter.gameObject.SetActive(false);
     }
@@ -111,5 +120,32 @@ public class StageUIManager : MonoBehaviour
     public void StopWrite()
     {
         StopCoroutine(_writeTextCoroutine);
+    }
+
+    public void SetGameMode(bool isGame)
+    {
+        _storyMode.SetActive(!isGame);
+        _gameMode.SetActive(isGame);
+    }
+
+    public void SettingResult(int player, int com)
+    {
+        for(int n = 0; n < _player.Length; n++)
+        {
+            _player[n].SetActive(false);
+            _com[n].SetActive(false);
+        }
+
+        _player[player].SetActive(true);
+        _com[com].SetActive(true);
+    }
+
+    public void SetOriginGame()
+    {
+        for (int n = 0; n < _player.Length; n++)
+        {
+            _player[n].SetActive(true);
+            _com[n].SetActive(true);
+        }
     }
 }

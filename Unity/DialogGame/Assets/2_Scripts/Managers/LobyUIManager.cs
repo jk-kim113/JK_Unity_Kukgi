@@ -13,6 +13,8 @@ public class LobyUIManager : MonoBehaviour
     GameObject _rootStageBtn;
     [SerializeField]
     Text _textStageIndex;
+    [SerializeField]
+    ArrowButton[] _arrowBtnArr;
 #pragma warning restore
 
     StageButton[] _stageBtnArr;
@@ -33,26 +35,42 @@ public class LobyUIManager : MonoBehaviour
 
     private void Start()
     {
-        SetLobbyUI(_currentPage);
+        _currentPage = SaveDataManager._instance._nowSaveData._currentEpi;
+        SetLobbyUI();
     }
 
-    public void SetLobbyUI(int stageIndex)
+    public void SetLobbyUI()
     {
-        _textStageIndex.text = stageIndex.ToString();
+        _textStageIndex.text = _currentPage.ToString();
 
         int id = 0;
         TableBase tb = TableManager._instance.Get(eTableType.Scenario);
         foreach(string key in tb._datas.Keys)
         {
-            if (tb._datas[key]["Episode"].CompareTo(stageIndex.ToString()) == 0)
+            if (tb._datas[key]["Episode"].CompareTo(_currentPage.ToString()) == 0)
             {
                 _stageBtnArr[id].OriginImage();
                 _stageBtnArr[id++].WriteText(tb._datas[key]["StageName"]);
             }
-                
 
             if (id >= _stageBtnArr.Length)
                 break;
+        }
+
+        if (_currentPage == 1)
+            _arrowBtnArr[(int)ArrowButton.eArrowType.Left].OffButton();
+
+        if (_currentPage == SaveDataManager._instance._nowSaveData._currentEpi)
+        {
+            for (int n = SaveDataManager._instance._nowSaveData._currentStage + 1; n < _stageBtnArr.Length; n++)
+                _stageBtnArr[n].GetComponent<Image>().color = Color.black;
+
+            _arrowBtnArr[(int)ArrowButton.eArrowType.Right].OffButton();
+        }   
+        else
+        {
+            for (int n = 0; n < _stageBtnArr.Length; n++)
+                _stageBtnArr[n].GetComponent<Image>().color = Color.white;
         }
     }
 
@@ -66,20 +84,23 @@ public class LobyUIManager : MonoBehaviour
 
     public void MovePage(ArrowButton.eArrowType type)
     {
+        for (int n = 0; n < _arrowBtnArr.Length; n++)
+            _arrowBtnArr[n].OnButton();
+
         switch (type)
         {
             case ArrowButton.eArrowType.Left:
                 _currentPage--;
-                if (_currentPage <= 0)
-                    _currentPage = 1;
+                if (_currentPage <= 1)
+                    _arrowBtnArr[(int)type].OffButton();
                 break;
             case ArrowButton.eArrowType.Right:
                 _currentPage++;
-                if (_currentPage >= 11)
-                    _currentPage = 10;
+                if (_currentPage >= 10)
+                    _arrowBtnArr[(int)type].OffButton();
                 break;
         }
 
-        SetLobbyUI(_currentPage);
+        SetLobbyUI();
     }
 }

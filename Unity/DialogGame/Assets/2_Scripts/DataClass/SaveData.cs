@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+[Serializable]
+public struct SaveData
+{
+    public string _playerName;
+    public int _currentEpi;
+    public int _currentStage;
+
+    public SaveData(string playerName, int nowEpi, int nowStage)
+    {
+        _playerName = playerName;
+        _currentEpi = nowEpi;
+        _currentStage = nowStage;
+    }
+}
