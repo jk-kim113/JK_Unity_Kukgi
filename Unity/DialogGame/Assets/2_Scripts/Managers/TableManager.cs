@@ -7,6 +7,8 @@ public enum eTableType
     Dialog,
     Scenario,
     ImageData,
+    MonsterTable,
+    PlayerLevelTable,
 
     max
 }
@@ -46,6 +48,8 @@ public class TableManager : TSingleton<TableManager>
         Load<Dialog>(eTableType.Dialog);
         Load<Scenario>(eTableType.Scenario);
         Load<ImageData>(eTableType.ImageData);
+        Load<MonsterTable>(eTableType.MonsterTable);
+        Load<PlayerLevelTable>(eTableType.PlayerLevelTable);
     }
 
     public TableBase Get(eTableType type)

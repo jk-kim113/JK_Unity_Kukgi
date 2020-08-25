@@ -8,11 +8,13 @@ public struct SaveData
     public string _playerName;
     public int _currentEpi;
     public int _currentStage;
+    public int _countExp;
 
-    public SaveData(string playerName, int nowEpi, int nowStage)
+    public SaveData(string playerName, int nowEpi, int nowStage, int exp)
     {
         _playerName = playerName;
         _currentEpi = nowEpi;
         _currentStage = nowStage;
+        _countExp = exp;
     }
 }

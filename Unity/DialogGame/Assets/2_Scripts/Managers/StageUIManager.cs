@@ -29,6 +29,10 @@ public class StageUIManager : MonoBehaviour
     GameObject[] _player;
     [SerializeField]
     GameObject[] _com;
+    [SerializeField]
+    Text _countWinLose;
+    [SerializeField]
+    Text _countMonster;
 #pragma warning restore
 
     Coroutine _writeTextCoroutine;
@@ -147,5 +151,15 @@ public class StageUIManager : MonoBehaviour
             _player[n].SetActive(true);
             _com[n].SetActive(true);
         }
+    }
+
+    public void SetWinLoseCount(int win, int lose)
+    {
+        _countWinLose.text = win.ToString() + "승 " + lose.ToString() + "패";
+    }
+
+    public void SetMonsterCount(int moncnt, int total)
+    {
+        _countMonster.text = moncnt.ToString() + " / " + total.ToString();
     }
 }

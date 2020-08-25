@@ -55,6 +55,7 @@ public class SaveDataManager : TSingleton<SaveDataManager>
             _saveData._playerName = string.Empty;
             _saveData._currentEpi = 1;
             _saveData._currentStage = 0;
+            _saveData._countExp = 0;
 
             return false;
         }
