@@ -12,8 +12,6 @@ public class StageManager : MonoBehaviour
     float _timeCheck;
     float _autoNext = 3.0f;
 
-    bool _isFinish;
-
     bool _isCount;
     public bool _isCounting { set { _isCount = value; } }
 
@@ -29,7 +27,6 @@ public class StageManager : MonoBehaviour
     {
         _uniqueInstance = this;
         _isCount = false;
-        _isFinish = false;
     }
 
     private void Start()
@@ -46,53 +43,74 @@ public class StageManager : MonoBehaviour
             {
                 _timeCheck = 0;
                 _isCount = false;
-                NextStep();
+                SetDialog();
             }
         }   
     }
 
     void InitSetting()
     {
-        StageUIManager._instance.SetEpisode(SaveDataManager._instance._nowEpi.ToString());
+        UIManager._instance.DeleteKey(UIManager.eKindWindow.LobbyUI);
 
         int index = 10 * (SaveDataManager._instance._nowEpi - 1) + SaveDataManager._instance._nowStage;
-        StageUIManager._instance.SetBG(ResourcePoolManager._instance.GetImage(
-                                        TableManager._instance.Get(eTableType.Scenario).ToS(index, "ImageName")));
+
+        if (!UIManager._instance.isOpened(UIManager.eKindWindow.StageBGUI))
+            UIManager._instance.Open(UIManager.eKindWindow.StageBGUI);
+
+        UIManager._instance.GetWnd<StageBGUI>(UIManager.eKindWindow.StageBGUI).InitSetting(
+                            ResourcePoolManager._instance.GetImage(TableManager._instance.Get(eTableType.Scenario).ToS(index, "ImageName")),
+                            SaveDataManager._instance._nowEpi.ToString());
+
+        if (!UIManager._instance.isOpened(UIManager.eKindWindow.StageUI))
+            UIManager._instance.Open(UIManager.eKindWindow.StageUI);
+
 
         _storyIndex = TableManager._instance.Get(eTableType.Scenario).ToI(index, "StartIndex");
 
         if(_storyIndex == 0)
         {
-            _isFinish = true;
             GameStart();
             return;
         }
 
-        NextStep();
+        SetDialog();
     }
 
-    void NextStep()
+    void SetDialog()
     {
         TableBase tb = TableManager._instance.Get(eTableType.Dialog);
         
         if(tb.ToI(_storyIndex, "Paragraph") != SaveDataManager._instance._nowStage)
         {
-            _isFinish = true;
-            StageUIManager._instance.SetCharacter(null);
             GameStart();
             return;
         }
 
-        StageUIManager._instance.SetCharacter(ResourcePoolManager._instance.GetImage(tb._datas[_storyIndex.ToString()]["ImageName"]));
-        StageUIManager._instance.SetName(string.Format(tb._datas[_storyIndex.ToString()]["Name"], SaveDataManager._instance._nowSaveData._playerName));
+        StageUI sUI = UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI);
 
-        WriteSentences(tb, _storyIndex, false);
+        switch (tb._datas[_storyIndex.ToString()]["SentencesPosition"])
+        {
+            case "0":
+                sUI.SetDialog(null, true, 
+                    string.Format(tb._datas[_storyIndex.ToString()]["Sentences"], SaveDataManager._instance._nowSaveData._playerName));
+                break;
+            case "1":
+                sUI.SetDialog(ResourcePoolManager._instance.GetImage(tb._datas[_storyIndex.ToString()]["ImageName"]), false,
+                    string.Format(tb._datas[_storyIndex.ToString()]["Name"], SaveDataManager._instance._nowSaveData._playerName),
+                    string.Format(tb._datas[_storyIndex.ToString()]["Sentences"], SaveDataManager._instance._nowSaveData._playerName));
+                break;
+        }
 
         _storyIndex++;
     }
 
     void GameStart()
     {
+        UIManager._instance.Close(UIManager.eKindWindow.StageUI);
+
+        if (!UIManager._instance.isOpened(UIManager.eKindWindow.MiniGameUI))
+            UIManager._instance.Open(UIManager.eKindWindow.MiniGameUI);
+
         _currentMonCnt = 1;
         _countMonster = (int)(SaveDataManager._instance._nowStage * 0.5 + 1);
 
@@ -108,9 +126,8 @@ public class StageManager : MonoBehaviour
 
         SetMonster();
 
-        StageUIManager._instance.SetGameMode(true);
-        StageUIManager._instance.SetWinLoseCount(0, 0);
-        StageUIManager._instance.SetMonsterCount(_currentMonCnt, _countMonster);
+        UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI).SetWinLoseCount(0, 0);
+        UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI).SetMonsterCount(_currentMonCnt, _countMonster);
     }
 
     void SetMonster()
@@ -128,7 +145,8 @@ public class StageManager : MonoBehaviour
     {
         int com = ComResult();
 
-        StageUIManager._instance.SettingResult((int)type, com);
+        MiniGameUI mgUI = UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI);
+        mgUI.SettingResult((int)type, com);
         _playCount--;
 
         switch (type)
@@ -165,72 +183,68 @@ public class StageManager : MonoBehaviour
         {
             if(++_currentMonCnt > _countMonster)
             {
-                StageUIManager._instance.SetGameMode(false);
-                StageUIManager._instance.SetNotification("해당 스테이지의 스토리가 끝났습니다. 닫기 버튼을 이용하여 로비로 돌아가십시오.");
                 SaveDataManager._instance.NextStage();
+                UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
+                UIManager._instance.Open(UIManager.eKindWindow.StageUI);
+                UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI).SetNotification(
+                                "해당 스테이지의 스토리가 끝났습니다. 닫기 버튼을 이용하여 로비로 돌아가십시오.");
             }
             else
             {
-                StageUIManager._instance.SetMonsterCount(_currentMonCnt, _countMonster);
+                mgUI.SetMonsterCount(_currentMonCnt, _countMonster);
                 _playerWin = _comWin = 0;
-                StageUIManager._instance.SetWinLoseCount(_playerWin, _comWin);
+                mgUI.SetWinLoseCount(_playerWin, _comWin);
             }
         }
         else if (_comWin >= 3)
         {
-            StageUIManager._instance.SetGameMode(false);
-            StageUIManager._instance.SetNotification("해당 스테이지의 스토리가 끝났습니다. 닫기 버튼을 이용하여 로비로 돌아가십시오.");
+            UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
+            UIManager._instance.Open(UIManager.eKindWindow.StageUI);
+            UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI).SetNotification(
+                                "해당 스테이지의 스토리가 끝났습니다. 닫기 버튼을 이용하여 로비로 돌아가십시오.");
         }
 
         yield return new WaitForSeconds(1f);
-        StageUIManager._instance.SetWinLoseCount(_playerWin, _comWin);
-        StageUIManager._instance.SetOriginGame();
+        mgUI.SetWinLoseCount(_playerWin, _comWin);
+        mgUI.SetOriginGame();
     }
 
     int ComResult()
     {
         int temp = Random.Range(1, 101);
 
-        if (temp < TableManager._instance.Get(eTableType.MonsterTable).ToI(_nowMonIndex, "R_Rate"))
+        TableBase monTb = TableManager._instance.Get(eTableType.MonsterTable);
+
+        if (temp < monTb.ToI(_nowMonIndex, "R_Rate"))
             return 0;
-        else if (temp < TableManager._instance.Get(eTableType.MonsterTable).ToI(_nowMonIndex, "R_Rate") +
-                        TableManager._instance.Get(eTableType.MonsterTable).ToI(_nowMonIndex, "S_Rate"))
+        else if (temp < monTb.ToI(_nowMonIndex, "R_Rate") + monTb.ToI(_nowMonIndex, "S_Rate"))
             return 1;
         else
             return 2;
     }
 
-    void WriteSentences(TableBase tb, int index, bool isImmediate)
-    {
-        switch (tb._datas[index.ToString()]["SentencesPosition"])
-        {
-            case "0":
-                StageUIManager._instance.SetNarration(string.Format(tb._datas[index.ToString()]["Sentences"], 
-                                                SaveDataManager._instance._nowSaveData._playerName), isImmediate);
-                break;
-            case "1":
-                StageUIManager._instance.SetStory(string.Format(tb._datas[index.ToString()]["Sentences"], 
-                                                SaveDataManager._instance._nowSaveData._playerName), isImmediate);
-                break;
-        }
-    }
-
     public void DownNextBtn()
     {
-        if (_isFinish)
-            return;
-
         if(!_isCount)
         {
-            StageUIManager._instance.StopWrite();
-            WriteSentences(TableManager._instance.Get(eTableType.Dialog), _storyIndex - 1, true);
+            TableBase tb = TableManager._instance.Get(eTableType.Dialog);
+            StageUI sUI = UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI);
+            switch (tb._datas[(_storyIndex - 1).ToString()]["SentencesPosition"])
+            {
+                case "0":
+                    sUI.WriteImmediately(true);
+                    break;
+                case "1":
+                    sUI.WriteImmediately(false);
+                    break;
+            }
             _isCount = true;
         }
         else
         {
             _timeCheck = 0;
             _isCount = false;
-            NextStep();
+            SetDialog();
         }
     }
 }

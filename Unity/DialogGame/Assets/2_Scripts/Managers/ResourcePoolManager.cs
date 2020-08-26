@@ -5,11 +5,12 @@ using UnityEngine;
 public class ResourcePoolManager : TSingleton<ResourcePoolManager>
 {
     Dictionary<string, Sprite> _imageData = new Dictionary<string, Sprite>();
+    Dictionary<string, GameObject> _prefabData = new Dictionary<string, GameObject>();
 
     protected override void Init()
     {
         base.Init();
-
+        
         ResourceAllLoad();
     }
 
@@ -32,6 +33,14 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
             Sprite image = Resources.Load<Sprite>(imageTable._datas[key]["Location"]);
             _imageData.Add(imageTable._datas[key]["ImageName"], image);
         }
+
+        TableBase prefabTable = TableManager._instance.Get(eTableType.PrefabData);
+
+        foreach(string key in prefabTable._datas.Keys)
+        {
+            GameObject prefab = Resources.Load<GameObject>(prefabTable._datas[key]["Location"]);
+            _prefabData.Add(prefabTable._datas[key]["Name"], prefab);
+        }
     }
 
     public Sprite GetImage(string name)
@@ -40,5 +49,13 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
             return null;
 
         return _imageData[name];
+    }
+
+    public GameObject GetPrefab(string name)
+    {
+        if (_prefabData.ContainsKey(name))
+            return _prefabData[name];
+
+        return null;
     }
 }

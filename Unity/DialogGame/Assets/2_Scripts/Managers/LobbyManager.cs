@@ -14,6 +14,16 @@ public class LobbyManager : MonoBehaviour
         _uniqueInstance = this;
     }
 
+    private void Start()
+    {
+        UIManager._instance.DeleteKey(UIManager.eKindWindow.StageUI);
+        UIManager._instance.DeleteKey(UIManager.eKindWindow.StageBGUI);
+        UIManager._instance.DeleteKey(UIManager.eKindWindow.MiniGameUI);
+
+        if (!UIManager._instance.isOpened(UIManager.eKindWindow.LobbyUI))
+            UIManager._instance.Open(UIManager.eKindWindow.LobbyUI);
+    }
+
     public void GoStage()
     {
         SaveDataManager._instance.SettingStageInfo(LobyUIManager._instance._nowEpi, LobyUIManager._instance._nowStage);

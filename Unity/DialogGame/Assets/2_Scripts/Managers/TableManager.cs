@@ -9,6 +9,7 @@ public enum eTableType
     ImageData,
     MonsterTable,
     PlayerLevelTable,
+    PrefabData,
 
     max
 }
@@ -50,6 +51,7 @@ public class TableManager : TSingleton<TableManager>
         Load<ImageData>(eTableType.ImageData);
         Load<MonsterTable>(eTableType.MonsterTable);
         Load<PlayerLevelTable>(eTableType.PlayerLevelTable);
+        Load<PrefabData>(eTableType.PrefabData);
     }
 
     public TableBase Get(eTableType type)

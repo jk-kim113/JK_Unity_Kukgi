@@ -5,13 +5,10 @@ using UnityEngine.UI;
 
 public class StartManager : MonoBehaviour
 {
-#pragma warning disable 0649
-    [SerializeField]
-    InputField _enterName;
-#pragma warning restore
-
     static StartManager _uniqueInstance;
     public static StartManager _instance { get { return _uniqueInstance; } }
+
+    InputField _enterName;
 
     private void Awake()
     {
@@ -20,6 +17,12 @@ public class StartManager : MonoBehaviour
 
     private void Start()
     {
+        if (!UIManager._instance.isOpened(UIManager.eKindWindow.StartUI))
+        {
+            UIManager._instance.Open(UIManager.eKindWindow.StartUI);
+            _enterName = GameObject.FindGameObjectWithTag("PlayerNameField").GetComponent<InputField>();
+        }   
+
         if (!SaveDataManager._instance.LoadData())
             _enterName.text = string.Empty;
         else
