@@ -16,12 +16,12 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
-        UIManager._instance.DeleteKey(UIManager.eKindWindow.StageUI);
-        UIManager._instance.DeleteKey(UIManager.eKindWindow.StageBGUI);
-        UIManager._instance.DeleteKey(UIManager.eKindWindow.MiniGameUI);
+        UIManager._instance.Close(UIManager.eKindWindow.StartUI);
+        UIManager._instance.Close(UIManager.eKindWindow.StageBGUI);
+        UIManager._instance.Close(UIManager.eKindWindow.StageUI);
+        UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
 
-        if (!UIManager._instance.isOpened(UIManager.eKindWindow.LobbyUI))
-            UIManager._instance.Open(UIManager.eKindWindow.LobbyUI);
+        UIManager._instance.OpenWnd<LobyUIManager>(UIManager.eKindWindow.LobbyUI);
     }
 
     public void GoStage()

@@ -17,11 +17,8 @@ public class StartManager : MonoBehaviour
 
     private void Start()
     {
-        if (!UIManager._instance.isOpened(UIManager.eKindWindow.StartUI))
-        {
-            UIManager._instance.Open(UIManager.eKindWindow.StartUI);
-            _enterName = GameObject.FindGameObjectWithTag("PlayerNameField").GetComponent<InputField>();
-        }   
+        UIManager._instance.OpenWnd<StartUI>(UIManager.eKindWindow.StartUI);
+        _enterName = GameObject.FindGameObjectWithTag("PlayerNameField").GetComponent<InputField>();
 
         if (!SaveDataManager._instance.LoadData())
             _enterName.text = string.Empty;

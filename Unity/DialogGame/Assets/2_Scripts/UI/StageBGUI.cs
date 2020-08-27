@@ -12,7 +12,7 @@ public class StageBGUI : MonoBehaviour
     Text _textEpisode;
 #pragma warning restore
 
-    private void Start()
+    private void OnEnable()
     {
         GetComponent<Canvas>().worldCamera = Camera.main;
     }

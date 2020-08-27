@@ -33,8 +33,13 @@ public class LobyUIManager : MonoBehaviour
             _stageBtnArr[n].SettingBtn(n + 1);
     }
 
-    private void Start()
+    private void OnEnable()
     {
+        GetComponent<Canvas>().worldCamera = Camera.main;
+    }
+
+    private void Start()
+    {   
         _currentPage = SaveDataManager._instance._nowSaveData._currentEpi;
         SetLobbyUI();
     }

@@ -19,7 +19,7 @@ public class StageUI : MonoBehaviour
     Coroutine _writeTextCoroutine;
     string _currentText;
 
-    private void Start()
+    private void OnEnable()
     {
         GetComponent<Canvas>().worldCamera = Camera.main;
     }

@@ -29,7 +29,6 @@ public class TableManager : TSingleton<TableManager>
     {
         if(_tableData.ContainsKey(type))
             return _tableData[type];
-
         
         TextAsset tAsset = Resources.Load("bin/" + type.ToString()) as TextAsset;
         if(tAsset != null)

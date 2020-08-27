@@ -17,7 +17,9 @@ public class StageManager : MonoBehaviour
 
     int _playerWin = 0;
     int _comWin = 0;
-    int _playCount = 5;
+    int _allowedLoseCnt;
+    int _playCount;
+    int _currentPlayCount;
     int _countMonster;
     int _currentMonCnt;
     int _nowMonIndex;
@@ -45,28 +47,30 @@ public class StageManager : MonoBehaviour
                 _isCount = false;
                 SetDialog();
             }
-        }   
+        }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            GameObject eff = EffectManager._instance.GetEffect(EffectManager.eKindEffect.MouseClick);
+            eff.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
     }
 
     void InitSetting()
     {
-        UIManager._instance.DeleteKey(UIManager.eKindWindow.LobbyUI);
+        UIManager._instance.Close(UIManager.eKindWindow.LobbyUI);
 
         int index = 10 * (SaveDataManager._instance._nowEpi - 1) + SaveDataManager._instance._nowStage;
 
-        if (!UIManager._instance.isOpened(UIManager.eKindWindow.StageBGUI))
-            UIManager._instance.Open(UIManager.eKindWindow.StageBGUI);
+        TableBase scenario = TableManager._instance.Get(eTableType.Scenario);
 
-        UIManager._instance.GetWnd<StageBGUI>(UIManager.eKindWindow.StageBGUI).InitSetting(
-                            ResourcePoolManager._instance.GetImage(TableManager._instance.Get(eTableType.Scenario).ToS(index, "ImageName")),
+        StageBGUI sBGUI = UIManager._instance.OpenWnd<StageBGUI>(UIManager.eKindWindow.StageBGUI);
+        sBGUI.InitSetting(ResourcePoolManager._instance.GetImage(scenario.ToS(index, "ImageName")),
                             SaveDataManager._instance._nowEpi.ToString());
 
-        if (!UIManager._instance.isOpened(UIManager.eKindWindow.StageUI))
-            UIManager._instance.Open(UIManager.eKindWindow.StageUI);
+        StageUI sUI = UIManager._instance.OpenWnd<StageUI>(UIManager.eKindWindow.StageUI);
 
-
-        _storyIndex = TableManager._instance.Get(eTableType.Scenario).ToI(index, "StartIndex");
-
+        _storyIndex = scenario.ToI(index, "StartIndex");
         if(_storyIndex == 0)
         {
             GameStart();
@@ -108,11 +112,14 @@ public class StageManager : MonoBehaviour
     {
         UIManager._instance.Close(UIManager.eKindWindow.StageUI);
 
-        if (!UIManager._instance.isOpened(UIManager.eKindWindow.MiniGameUI))
-            UIManager._instance.Open(UIManager.eKindWindow.MiniGameUI);
+        MiniGameUI mgUI = UIManager._instance.OpenWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI);
 
         _currentMonCnt = 1;
         _countMonster = (int)(SaveDataManager._instance._nowStage * 0.5 + 1);
+
+        _allowedLoseCnt = TableManager._instance.Get(eTableType.PlayerLevelTable).ToI(SaveDataManager._instance._nowLevel, "LoseCount");
+        mgUI.SetAllowedLose(_allowedLoseCnt);
+        mgUI.SetPlayerLevel(SaveDataManager._instance._nowLevel);
 
         TableBase tb = TableManager._instance.Get(eTableType.MonsterTable);
         foreach(string key in tb._datas.Keys)
@@ -124,16 +131,23 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        SetMonster();
+        SetMonster(tb, mgUI);
 
-        UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI).SetWinLoseCount(0, 0);
-        UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI).SetMonsterCount(_currentMonCnt, _countMonster);
+        mgUI.SetWinLoseCount(0, 0);
+        mgUI.SetMonsterCount(_currentMonCnt, _countMonster);
     }
 
-    void SetMonster()
+    void SetMonster(TableBase tb, MiniGameUI mgUI)
     {
         int id = Random.Range(0, _monsterIndexList.Count);
         _nowMonIndex = _monsterIndexList[id];
+
+        _currentPlayCount = 0;
+        _playCount = tb.ToI(_nowMonIndex, "GameCount");
+
+        mgUI.SetMonsterName(tb.ToS(_nowMonIndex, "Name"));
+        mgUI.SetGameCondition((_playCount / 2 + 1));
+        mgUI.SetGameCount(_currentPlayCount, _playCount);
     }
 
     public void SendRSPType(RSPButton.eRSPType type)
@@ -147,7 +161,7 @@ public class StageManager : MonoBehaviour
 
         MiniGameUI mgUI = UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI);
         mgUI.SettingResult((int)type, com);
-        _playCount--;
+        _currentPlayCount++;
 
         switch (type)
         {
@@ -157,7 +171,7 @@ public class StageManager : MonoBehaviour
                 else if (com == 2)
                     _comWin++;
                 else
-                    _playCount++;
+                    _currentPlayCount--;
                 break;
             case RSPButton.eRSPType.Scissor:
                 if (com == 0)
@@ -165,7 +179,7 @@ public class StageManager : MonoBehaviour
                 else if (com == 2)
                     _playerWin++;
                 else
-                    _playCount++;
+                    _currentPlayCount--;
                 break;
             case RSPButton.eRSPType.Paper:
                 if (com == 0)
@@ -173,16 +187,31 @@ public class StageManager : MonoBehaviour
                 else if (com == 1)
                     _comWin++;
                 else
-                    _playCount++;
+                    _currentPlayCount--;
                 break;
         }
 
+        mgUI.SetGameCount(_currentPlayCount, _playCount);
+
         yield return new WaitForSeconds(1f);
 
-        if (_playerWin >= 3)
+        if (_playerWin >= (_playCount / 2 + 1))
         {
-            if(++_currentMonCnt > _countMonster)
+            SaveDataManager._instance._nowExp++;
+            int exp = SaveDataManager._instance._nowExp -
+                TableManager._instance.Get(eTableType.PlayerLevelTable).ToI(SaveDataManager._instance._nowLevel, "LevelUpCount");
+            if (exp >= 0)
             {
+                SaveDataManager._instance._nowLevel++;
+                SaveDataManager._instance._nowExp = exp;
+                UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI).SetPlayerLevel(SaveDataManager._instance._nowLevel);
+            }
+
+            if (++_currentMonCnt > _countMonster)
+            {
+                GameObject eff = EffectManager._instance.GetEffect(EffectManager.eKindEffect.MiniGameWin);
+                eff.transform.position = Vector3.zero;
+
                 SaveDataManager._instance.NextStage();
                 UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
                 UIManager._instance.Open(UIManager.eKindWindow.StageUI);
@@ -192,12 +221,16 @@ public class StageManager : MonoBehaviour
             else
             {
                 mgUI.SetMonsterCount(_currentMonCnt, _countMonster);
+                SetMonster(TableManager._instance.Get(eTableType.MonsterTable), UIManager._instance.GetWnd<MiniGameUI>(UIManager.eKindWindow.MiniGameUI));
                 _playerWin = _comWin = 0;
                 mgUI.SetWinLoseCount(_playerWin, _comWin);
             }
         }
-        else if (_comWin >= 3)
+        else if (_comWin > _allowedLoseCnt)
         {
+            GameObject eff = EffectManager._instance.GetEffect(EffectManager.eKindEffect.MiniGameLose);
+            eff.transform.position = Vector3.zero;
+
             UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
             UIManager._instance.Open(UIManager.eKindWindow.StageUI);
             UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI).SetNotification(

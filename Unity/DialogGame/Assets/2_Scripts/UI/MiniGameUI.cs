@@ -14,7 +14,22 @@ public class MiniGameUI : MonoBehaviour
     Text _countWinLose;
     [SerializeField]
     Text _countMonster;
+    [SerializeField]
+    Text _countGame;
+    [SerializeField]
+    Text _gameCondition;
+    [SerializeField]
+    Text _monName;
+    [SerializeField]
+    Text _allowedLose;
+    [SerializeField]
+    Text _playerLevel;
 #pragma warning restore
+
+    private void OnEnable()
+    {
+        GetComponent<Canvas>().worldCamera = Camera.main;
+    }
 
     public void SettingResult(int player, int com)
     {
@@ -45,5 +60,30 @@ public class MiniGameUI : MonoBehaviour
             _player[n].SetActive(true);
             _com[n].SetActive(true);
         }
+    }
+
+    public void SetGameCount(int current, int max)
+    {
+        _countGame.text = string.Format("판 수 : {0} / {1}", current, max);
+    }
+
+    public void SetGameCondition(int value)
+    {
+        _gameCondition.text = string.Format("{0}번 이기면 승리", value);
+    }
+
+    public void SetMonsterName(string name)
+    {
+        _monName.text = string.Format("Mon Name : {0}", name);
+    }
+
+    public void SetAllowedLose(int value)
+    {
+        _allowedLose.text = string.Format("{0}번은 져도 됨", value);
+    }
+
+    public void SetPlayerLevel(int level)
+    {
+        _playerLevel.text = string.Format("Player Level : {0}", level);
     }
 }

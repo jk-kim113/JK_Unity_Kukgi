@@ -14,6 +14,8 @@ public class SaveDataManager : TSingleton<SaveDataManager>
     int _currentEpi;
     int _currentStage;
 
+    public int _nowLevel { get { return _saveData._currentLevel; } set { _saveData._currentLevel = value; } }
+    public int _nowExp { get { return _saveData._currentExp; } set { _saveData._currentExp = value; } }
     public int _nowEpi { get { return _currentEpi; } }
     public int _nowStage { get { return _currentStage; } }
 
@@ -55,7 +57,8 @@ public class SaveDataManager : TSingleton<SaveDataManager>
             _saveData._playerName = string.Empty;
             _saveData._currentEpi = 1;
             _saveData._currentStage = 0;
-            _saveData._countExp = 0;
+            _saveData._currentLevel = 1;
+            _saveData._currentExp = 0;
 
             return false;
         }
