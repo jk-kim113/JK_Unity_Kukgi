@@ -17,6 +17,9 @@ public class StartManager : MonoBehaviour
 
     private void Start()
     {
+        TableManager._instance.LoadAll();
+        ResourcePoolManager._instance.ResourceAllLoad();
+
         UIManager._instance.OpenWnd<StartUI>(UIManager.eKindWindow.StartUI);
         _enterName = GameObject.FindGameObjectWithTag("PlayerNameField").GetComponent<InputField>();
 
