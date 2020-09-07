@@ -44,24 +44,24 @@ public class UIManager : TSingleton<UIManager>
         return null;
     }
 
-    public void Open(eKindWindow wnd)
-    {
-        if(_dicUIs.ContainsKey(wnd))
-        {
-            _dicUIs[wnd].SetActive(true);
-        }
-        else
-        {
-            GameObject ui = Instantiate(ResourcePoolManager._instance.GetPrefab(wnd.ToString()));
-            _dicUIs.Add(wnd, ui);
-        }
-    }
+    //public void Open(eKindWindow wnd)
+    //{
+    //    if(_dicUIs.ContainsKey(wnd))
+    //    {
+    //        _dicUIs[wnd].SetActive(true);
+    //    }
+    //    else
+    //    {
+    //        GameObject ui = Instantiate(ResourcePoolManager._instance.GetPrefab(wnd.ToString()));
+    //        _dicUIs.Add(wnd, ui);
+    //    }
+    //}
 
     public T OpenWnd<T>(eKindWindow wnd) where T : Component
     {
         if (!_dicUIs.ContainsKey(wnd))
         {
-            GameObject ui = Instantiate(ResourcePoolManager._instance.GetPrefab(wnd.ToString()), transform);
+            GameObject ui = Instantiate(ResourcePoolManager._instance.GetObj<GameObject>(ResourcePoolManager.eResourceKind.Prefab, wnd.ToString()), transform);
             _dicUIs.Add(wnd, ui);
             return ui.GetComponent<T>();
         }

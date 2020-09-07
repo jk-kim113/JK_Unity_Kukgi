@@ -8,7 +8,7 @@ public class ImageData : TableBase
     public enum Index
     {
         Index,
-        ImageName,
+        Name,
         Location,
 
         max

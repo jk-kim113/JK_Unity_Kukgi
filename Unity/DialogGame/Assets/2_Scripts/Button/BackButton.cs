@@ -15,12 +15,12 @@ public class BackButton : MonoBehaviour
 
     public void DownBtn()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("BackDownBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "BackDownBtn");
     }
 
     public void UpBtn()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("BackNormalBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "BackNormalBtn");
         SceneManager.LoadScene("LobbyScene");
     }
 }

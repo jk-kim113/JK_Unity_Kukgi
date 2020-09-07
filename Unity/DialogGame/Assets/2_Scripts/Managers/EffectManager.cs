@@ -46,7 +46,7 @@ public class EffectManager : TSingleton<EffectManager>
 
     GameObject MakeNewInstance(eKindEffect eff)
     {
-        GameObject newObj = Instantiate(ResourcePoolManager._instance.GetPrefab(eff.ToString()), transform);
+        GameObject newObj = Instantiate(ResourcePoolManager._instance.GetObj<GameObject>(ResourcePoolManager.eResourceKind.Prefab, eff.ToString()), transform);
         mPool[(int)eff].Add(newObj);
         return newObj;
     }

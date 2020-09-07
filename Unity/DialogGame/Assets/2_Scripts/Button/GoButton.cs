@@ -27,17 +27,17 @@ public class GoButton : MonoBehaviour
 
     private void Start()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("GoNormalBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "GoNormalBtn");
     }
 
     public void DownBtn()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("GoDownBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "GoDownBtn");
     }
 
     public void UpBtn()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("GoNormalBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "GoNormalBtn");
         switch(_secneType)
         {
             case eSceneType.Start:

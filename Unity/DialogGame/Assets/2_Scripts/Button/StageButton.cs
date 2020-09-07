@@ -20,19 +20,19 @@ public class StageButton : MonoBehaviour
 
     private void Start()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("StageBarNormalBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "StageBarNormalBtn");
     }
 
     public void ClickBtn()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("StageBarSelectBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "StageBarSelectBtn");
 
         LobyUIManager._instance.NowClickStageBtn(_index);
     }
 
     public void OriginImage()
     {
-        _img.sprite = ResourcePoolManager._instance.GetImage("StageBarNormalBtn");
+        _img.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, "StageBarNormalBtn");
     }
 
     public void SettingBtn(int index)

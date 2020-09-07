@@ -13,14 +13,10 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
         max
     }
 
-    Dictionary<string, Sprite> _imageData = new Dictionary<string, Sprite>();
-    Dictionary<string, GameObject> _prefabData = new Dictionary<string, GameObject>();
+    //Dictionary<string, Sprite> _imageData = new Dictionary<string, Sprite>();
+    //Dictionary<string, GameObject> _prefabData = new Dictionary<string, GameObject>();
 
-    //Dictionary<string, object> _imageData2 = new Dictionary<string, object>();
-    //Dictionary<string, object> _prefabData2 = new Dictionary<string, object>();
     Dictionary<eResourceKind, Dictionary<string, object>> _resourceData = new Dictionary<eResourceKind, Dictionary<string, object>>();
-
-    Dictionary<eResourceKind, object> _r = new Dictionary<eResourceKind, object>();
 
     protected override void Init()
     {
@@ -29,30 +25,39 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
         //ResourceAllLoad();
     }
 
-    public T GetObj<T>(eResourceKind kind, string name) where T : Component
+    public T GetObj<T>(eResourceKind kind, string name) where T : class
     {
         if(_resourceData.ContainsKey(kind))
         {
             if (_resourceData[kind].ContainsKey(name))
             {   
-                object o = _resourceData[kind][name];
-                return (T)Convert.ChangeType(o, typeof(T));
+                object obj = _resourceData[kind][name];
+                return (T)Convert.ChangeType(obj, typeof(T));
             }
-        }   
+            else
+            {
+                Debug.LogWarning("Key is not exist / name : " + name);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Key is not exist / kind : " + kind.ToString());
+        }
 
         return null;
     }
 
-    void LoadImageData(eResourceKind kind)
+    void LoadData<T>(eResourceKind kind, eTableType type) where T : class
     {
         Dictionary<string, object> tempDic = new Dictionary<string, object>();
 
-        TableBase imageTable = TableManager._instance.Get(eTableType.ImageData);
+        TableBase tb = TableManager._instance.Get(type);
 
-        foreach (string key in imageTable._datas.Keys)
+        foreach (string key in tb._datas.Keys)
         {
-            Sprite image = Resources.Load<Sprite>(imageTable._datas[key]["Location"]);
-            tempDic.Add(imageTable._datas[key]["ImageName"], image);
+            object obj = Resources.Load(tb._datas[key]["Location"], typeof(T));
+            T temp = (T)Convert.ChangeType(obj, typeof(T));
+            tempDic.Add(tb._datas[key]["Name"], temp);
         }
 
         _resourceData.Add(kind, tempDic);
@@ -60,6 +65,10 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
 
     public void ResourceAllLoad()
     {
+        LoadData<Sprite>(eResourceKind.Image, eTableType.ImageData);
+        LoadData<GameObject>(eResourceKind.Prefab, eTableType.PrefabData);
+
+        #region previous Load Function
         //for (int n = 1; n <= TableManager._instance.Get(eTableType.ImageData).Length; n++)
         //{
         //    if (!_imageData.ContainsKey(TableManager._instance.Get(eTableType.ImageData).ToS(n, "ImageName")))
@@ -70,36 +79,39 @@ public class ResourcePoolManager : TSingleton<ResourcePoolManager>
         //    }
         //}
 
-        TableBase imageTable = TableManager._instance.Get(eTableType.ImageData);
+        //TableBase imageTable = TableManager._instance.Get(eTableType.ImageData);
 
-        foreach(string key in imageTable._datas.Keys)
-        {
-            Sprite image = Resources.Load<Sprite>(imageTable._datas[key]["Location"]);
-            _imageData.Add(imageTable._datas[key]["ImageName"], image);
-        }
+        //foreach(string key in imageTable._datas.Keys)
+        //{
+        //    Sprite image = Resources.Load<Sprite>(imageTable._datas[key]["Location"]);
+        //    _imageData.Add(imageTable._datas[key]["ImageName"], image);
+        //}
 
-        TableBase prefabTable = TableManager._instance.Get(eTableType.PrefabData);
+        //TableBase prefabTable = TableManager._instance.Get(eTableType.PrefabData);
 
-        foreach(string key in prefabTable._datas.Keys)
-        {
-            GameObject prefab = Resources.Load<GameObject>(prefabTable._datas[key]["Location"]);
-            _prefabData.Add(prefabTable._datas[key]["Name"], prefab);
-        }
+        //foreach(string key in prefabTable._datas.Keys)
+        //{
+        //    GameObject prefab = Resources.Load<GameObject>(prefabTable._datas[key]["Location"]);
+        //    _prefabData.Add(prefabTable._datas[key]["Name"], prefab);
+        //}
+        #endregion
     }
 
-    public Sprite GetImage(string name)
-    {
-        if (name.CompareTo("0") == 0)
-            return null;
+    #region previous Get Function
+    //public Sprite GetImage(string name)
+    //{
+    //    if (name.CompareTo("0") == 0)
+    //        return null;
 
-        return _imageData[name];
-    }
+    //    return _imageData[name];
+    //}
 
-    public GameObject GetPrefab(string name)
-    {
-        if (_prefabData.ContainsKey(name))
-            return _prefabData[name];
+    //public GameObject GetPrefab(string name)
+    //{
+    //    if (_prefabData.ContainsKey(name))
+    //        return _prefabData[name];
 
-        return null;
-    }
+    //    return null;
+    //}
+    #endregion
 }

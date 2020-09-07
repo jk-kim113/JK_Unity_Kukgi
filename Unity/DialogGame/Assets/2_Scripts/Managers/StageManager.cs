@@ -65,7 +65,7 @@ public class StageManager : MonoBehaviour
         TableBase scenario = TableManager._instance.Get(eTableType.Scenario);
 
         StageBGUI sBGUI = UIManager._instance.OpenWnd<StageBGUI>(UIManager.eKindWindow.StageBGUI);
-        sBGUI.InitSetting(ResourcePoolManager._instance.GetImage(scenario.ToS(index, "ImageName")),
+        sBGUI.InitSetting(ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, scenario.ToS(index, "ImageName")),
                             SaveDataManager._instance._nowEpi.ToString());
 
         StageUI sUI = UIManager._instance.OpenWnd<StageUI>(UIManager.eKindWindow.StageUI);
@@ -99,7 +99,8 @@ public class StageManager : MonoBehaviour
                     string.Format(tb._datas[_storyIndex.ToString()]["Sentences"], SaveDataManager._instance._nowSaveData._playerName));
                 break;
             case "1":
-                sUI.SetDialog(ResourcePoolManager._instance.GetImage(tb._datas[_storyIndex.ToString()]["ImageName"]), false,
+                sUI.SetDialog(ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image, tb._datas[_storyIndex.ToString()]["ImageName"]), 
+                    false,
                     string.Format(tb._datas[_storyIndex.ToString()]["Name"], SaveDataManager._instance._nowSaveData._playerName),
                     string.Format(tb._datas[_storyIndex.ToString()]["Sentences"], SaveDataManager._instance._nowSaveData._playerName));
                 break;
@@ -214,7 +215,7 @@ public class StageManager : MonoBehaviour
 
                 SaveDataManager._instance.NextStage();
                 UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
-                UIManager._instance.Open(UIManager.eKindWindow.StageUI);
+                UIManager._instance.OpenWnd<StageUI>(UIManager.eKindWindow.StageUI);
                 UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI).SetNotification(
                                 "해당 스테이지의 스토리가 끝났습니다. 닫기 버튼을 이용하여 로비로 돌아가십시오.");
             }
@@ -232,7 +233,7 @@ public class StageManager : MonoBehaviour
             eff.transform.position = Vector3.zero;
 
             UIManager._instance.Close(UIManager.eKindWindow.MiniGameUI);
-            UIManager._instance.Open(UIManager.eKindWindow.StageUI);
+            UIManager._instance.OpenWnd<StageUI>(UIManager.eKindWindow.StageUI);
             UIManager._instance.GetWnd<StageUI>(UIManager.eKindWindow.StageUI).SetNotification(
                                 "해당 스테이지의 스토리가 끝났습니다. 닫기 버튼을 이용하여 로비로 돌아가십시오.");
         }

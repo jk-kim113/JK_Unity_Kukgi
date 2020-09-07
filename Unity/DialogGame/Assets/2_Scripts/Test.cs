@@ -23,7 +23,7 @@ public class Test : MonoBehaviour
 
     public void ClickBtn()
     {
-        _image.sprite = ResourcePoolManager._instance.GetImage(
+        _image.sprite = ResourcePoolManager._instance.GetObj<Sprite>(ResourcePoolManager.eResourceKind.Image,
                             TableManager._instance.Get(eTableType.Dialog).ToS(_index, "ImageName"));
         _image.SetNativeSize();
         _text.text = TableManager._instance.Get(eTableType.Dialog).ToS(_index++, "Sentences");
