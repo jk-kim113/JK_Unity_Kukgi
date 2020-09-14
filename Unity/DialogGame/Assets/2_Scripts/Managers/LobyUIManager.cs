@@ -36,6 +36,8 @@ public class LobyUIManager : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<Canvas>().worldCamera = Camera.main;
+        if (_currentDownStageBtnID > 0)
+            _stageBtnArr[_currentDownStageBtnID - 1].OriginImage();
     }
 
     private void Start()

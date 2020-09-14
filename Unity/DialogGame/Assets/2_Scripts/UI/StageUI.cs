@@ -32,7 +32,7 @@ public class StageUI : MonoBehaviour
     }
 
     public void SetDialog(Sprite img, bool isNarration, params string[] str)
-    {
+    {   
         if(_writeTextCoroutine != null)
             StopCoroutine(_writeTextCoroutine);
 
