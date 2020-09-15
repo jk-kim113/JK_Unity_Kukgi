@@ -69,8 +69,7 @@ Shader "Shader Forge/Gradient" {
                 indirectDiffuse += UNITY_LIGHTMODEL_AMBIENT.rgb; // Ambient Light
                 float2 node_8038 = (i.uv0*2.0+-1.0).rg;
                 float ArcTan2 = ((atan2(node_8038.r,node_8038.g)/6.28318530718)+0.5);
-                float node_7469 = ArcTan2;
-                float3 diffuseColor = lerp(_ColorA.rgb,_ColorB.rgb,node_7469);
+                float3 diffuseColor = lerp(_ColorA.rgb,_ColorB.rgb,ArcTan2);
                 float3 diffuse = (directDiffuse + indirectDiffuse) * diffuseColor;
 /// Final Color:
                 float3 finalColor = diffuse;
@@ -133,8 +132,7 @@ Shader "Shader Forge/Gradient" {
                 float3 directDiffuse = max( 0.0, NdotL) * attenColor;
                 float2 node_8038 = (i.uv0*2.0+-1.0).rg;
                 float ArcTan2 = ((atan2(node_8038.r,node_8038.g)/6.28318530718)+0.5);
-                float node_7469 = ArcTan2;
-                float3 diffuseColor = lerp(_ColorA.rgb,_ColorB.rgb,node_7469);
+                float3 diffuseColor = lerp(_ColorA.rgb,_ColorB.rgb,ArcTan2);
                 float3 diffuse = directDiffuse * diffuseColor;
 /// Final Color:
                 float3 finalColor = diffuse;
