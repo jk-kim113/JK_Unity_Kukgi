@@ -65,21 +65,21 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11170}
+      Script: {instanceID: 11226}
     - Class: 114
-      Script: {instanceID: 11458}
+      Script: {instanceID: 11514}
     - Class: 114
-      Script: {instanceID: 11512}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 12086}
+      Script: {instanceID: 12142}
     - Class: 114
-      Script: {instanceID: 12176}
+      Script: {instanceID: 12232}
     - Class: 114
-      Script: {instanceID: 13552}
+      Script: {instanceID: 13608}
     - Class: 114
-      Script: {instanceID: 13644}
+      Script: {instanceID: 13700}
     - Class: 114
-      Script: {instanceID: 14262}
+      Script: {instanceID: 14318}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -114,31 +114,31 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11170}
+      Script: {instanceID: 11226}
     - Class: 114
-      Script: {instanceID: 11458}
+      Script: {instanceID: 11514}
     - Class: 114
-      Script: {instanceID: 11462}
+      Script: {instanceID: 11518}
     - Class: 114
-      Script: {instanceID: 11512}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 11682}
+      Script: {instanceID: 11738}
     - Class: 114
-      Script: {instanceID: 12002}
+      Script: {instanceID: 12058}
     - Class: 114
-      Script: {instanceID: 12176}
+      Script: {instanceID: 12232}
     - Class: 114
-      Script: {instanceID: 12524}
+      Script: {instanceID: 12580}
     - Class: 114
-      Script: {instanceID: 12876}
+      Script: {instanceID: 12932}
     - Class: 114
-      Script: {instanceID: 13018}
+      Script: {instanceID: 13074}
     - Class: 114
-      Script: {instanceID: 13644}
+      Script: {instanceID: 13700}
     - Class: 114
-      Script: {instanceID: 13952}
+      Script: {instanceID: 14008}
     - Class: 114
-      Script: {instanceID: 14262}
+      Script: {instanceID: 14318}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -173,37 +173,37 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11170}
+      Script: {instanceID: 11216}
     - Class: 114
-      Script: {instanceID: 11264}
+      Script: {instanceID: 11226}
     - Class: 114
-      Script: {instanceID: 11458}
+      Script: {instanceID: 11320}
     - Class: 114
-      Script: {instanceID: 11512}
+      Script: {instanceID: 11514}
     - Class: 114
-      Script: {instanceID: 11926}
+      Script: {instanceID: 11568}
     - Class: 114
-      Script: {instanceID: 12176}
+      Script: {instanceID: 11982}
     - Class: 114
-      Script: {instanceID: 12476}
+      Script: {instanceID: 12232}
     - Class: 114
-      Script: {instanceID: 12876}
+      Script: {instanceID: 12532}
     - Class: 114
-      Script: {instanceID: 13094}
+      Script: {instanceID: 12932}
     - Class: 114
-      Script: {instanceID: 13166}
+      Script: {instanceID: 13150}
     - Class: 114
-      Script: {instanceID: 13644}
+      Script: {instanceID: 13222}
     - Class: 114
-      Script: {instanceID: 13670}
+      Script: {instanceID: 13700}
     - Class: 114
-      Script: {instanceID: 13710}
+      Script: {instanceID: 13726}
     - Class: 114
-      Script: {instanceID: 14262}
+      Script: {instanceID: 13766}
     - Class: 114
-      Script: {instanceID: 14282}
+      Script: {instanceID: 14318}
     - Class: 114
-      Script: {instanceID: 25656}
+      Script: {instanceID: 14338}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -221,6 +221,12 @@ ScriptsOnlyBuild:
     - Class: 224
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: 48776bfd75cb68aa81d6a3a51f5a1362
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnterPasswordWindow
   - hash:
       serializedVersion: 2
       Hash: 4bc4346a71a8df53a6b106f68ef3a190
@@ -761,15 +767,9 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 48776bfd75cb68aa81d6a3a51f5a1362
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: EnterPasswordWindow
   platform: 19
   scenePathNames:
   - Assets/01_Scenes/LogInScene.unity
   - Assets/01_Scenes/LobbyScene.unity
   - Assets/01_Scenes/IngameScene.unity
-  playerPath: D:/GitHub/Server/CardBattleClient/OnlineCardBattle.exe
+  playerPath: C:/JK/Client/OnlineCardBattle.exe
