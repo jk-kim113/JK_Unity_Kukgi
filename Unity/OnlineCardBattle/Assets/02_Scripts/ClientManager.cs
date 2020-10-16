@@ -198,6 +198,9 @@ public class ClientManager : TSingleton<ClientManager>
                         DefinedStructure.Packet_ChooseInfo pChooseInfo = new DefinedStructure.Packet_ChooseInfo();
                         pChooseInfo = (DefinedStructure.Packet_ChooseInfo)ConvertPacket.ByteArrayToStructure(pToClient._data, pChooseInfo.GetType(), pToClient._totalSize);
 
+                        while (IngameManager._instance._IsTurnCard)
+                            yield return null;
+
                         IngameManager._instance.ReverseCard(pChooseInfo._cardIdx1, pChooseInfo._cardIdx2, pChooseInfo._cardImgIdx1, pChooseInfo._cardImgIdx2);
 
                         break;
@@ -207,7 +210,7 @@ public class ClientManager : TSingleton<ClientManager>
                         DefinedStructure.Packet_ChooseResult pChooseResult = new DefinedStructure.Packet_ChooseResult();
                         pChooseResult = (DefinedStructure.Packet_ChooseResult)ConvertPacket.ByteArrayToStructure(pToClient._data, pChooseResult.GetType(), pToClient._totalSize);
 
-                        if(pChooseResult._isSuccess == 0)
+                        if (pChooseResult._isSuccess == 0)
                         {
                             IngameManager._instance.CorrectCard(pChooseResult._name, pChooseResult._cardIdx1, pChooseResult._cardIdx2, pChooseResult._name == _myName);
                         }
