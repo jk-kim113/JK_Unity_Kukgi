@@ -14,12 +14,22 @@ public class UserInfo : MonoBehaviour
     Text _correctNumTxt;
     [SerializeField]
     Image _turnImg;
+    [SerializeField]
+    GameObject _emptySlot;
+    [SerializeField]
+    GameObject _connectSlot;
 #pragma warning restore
 
     bool _isConnect = false;
     public bool _IsConnect { get { return _isConnect; } }
 
-    int correctNum = 0;
+    int _correctNum = 0;
+    int _index;
+
+    private void Awake()
+    {
+        ConnectRoom(false);
+    }
 
     private void Start()
     {
@@ -27,20 +37,61 @@ public class UserInfo : MonoBehaviour
         ShowTurnIcon(false);
     }
 
+    void ConnectRoom(bool isConnect)
+    {
+        _emptySlot.SetActive(!isConnect);
+        _connectSlot.SetActive(isConnect);
+    }
+
+    public void InitInfo(int index)
+    {
+        _index = index;
+    }
+
     public void InitInfo(Sprite img, string name)
     {
         _avatarImg.sprite = img;
         _nameTxt.text = name;
         _isConnect = true;
+
+        ConnectRoom(true);
     }
 
     public void ShowCorrectNumber()
     {
-        _correctNumTxt.text = (++correctNum).ToString();
+        _correctNumTxt.text = (++_correctNum).ToString();
     }
 
     public void ShowTurnIcon(bool isMyTurn)
     {
         _turnImg.gameObject.SetActive(isMyTurn);
+    }
+
+    public void ShowMaster(bool isMaster)
+    {
+        if(isMaster)
+            _nameTxt.color = Color.blue;
+        else
+            _nameTxt.color = Color.black;
+    }
+
+    public void ShowReady(bool isReady)
+    {
+        if(isReady)
+            _nameTxt.color = Color.yellow;
+        else
+            _nameTxt.color = Color.black;
+    }
+
+    public void ExitRoom()
+    {
+        _isConnect = false;
+        ConnectRoom(false);
+    }
+
+    public void ClickAddAIBtn()
+    {
+        if (IngameManager._instance._IsMaster)
+            ClientManager._instance.AddAI(_index);
     }
 }

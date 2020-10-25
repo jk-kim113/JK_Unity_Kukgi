@@ -15,13 +15,16 @@ public class CharacterSlot : MonoBehaviour, IPointerClickHandler
     Image _edgeImg;
     bool _isSelect = false;
 
+    SubInfoWindow _subInfoWnd;
+
     private void Start()
     {
         _edgeImg = GetComponent<Image>();
     }
 
-    public void InitSlot(Sprite img, int idx)
+    public void InitSlot(SubInfoWindow subInfoWnd, Sprite img, int idx)
     {
+        _subInfoWnd = subInfoWnd;
         _characImg.sprite = img;
         _idx = idx;
     }
@@ -40,6 +43,6 @@ public class CharacterSlot : MonoBehaviour, IPointerClickHandler
             _edgeImg.color = Color.white;
 
         _isSelect = !_isSelect;
-        LogInManager._instace.SelectedCharac(_idx, _isSelect);
+        _subInfoWnd.SelectedCharac(_idx, _isSelect);
     }
 }
