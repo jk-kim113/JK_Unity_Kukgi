@@ -42,6 +42,7 @@ public class DefinedProtocol
         ShowExit,
         ShowMaster,
         ShowReady,
+        ShowAI,
         CanPlay,
 
         GameStart,

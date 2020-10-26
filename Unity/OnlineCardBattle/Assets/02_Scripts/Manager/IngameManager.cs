@@ -49,6 +49,8 @@ public class IngameManager : MonoBehaviour
     private void Awake()
     {
         _uniqueInstance = this;
+
+        ClientManager._instance._IsInLobby = false;
     }
 
     private void Start()
@@ -63,6 +65,17 @@ public class IngameManager : MonoBehaviour
             _infoSlot[n].InitInfo(n);
 
         ClientManager._instance._IsIngame = true;
+    }
+
+    public void InitIngame()
+    {
+        for (int n = 0; n < _ltCardInfos.Count; n++)
+            Destroy(_ltCardInfos[n].gameObject);
+
+        if(!_isMaster)
+            ClientManager._instance.ReadyForGame();
+        else
+            _startBtn.interactable = false;
     }
 
     public void GameStart()
@@ -194,6 +207,13 @@ public class IngameManager : MonoBehaviour
         }
     }
 
+    public void ShowAI(int index, string name)
+    {
+        _otherName[index] = name;
+
+        _infoSlot[index].ShowAI(name);
+    }
+
     public void ShowMaster(string name, bool isMaster)
     {
         _startBtn.interactable = !isMaster;
@@ -227,32 +247,12 @@ public class IngameManager : MonoBehaviour
         }
     }
 
-    public void ShowReady(string name, bool isReady)
+    public void ShowReady(int slotIndex)
     {
-        if (isReady)
-        {
-            for (int n = 0; n < _infoSlot.Length; n++)
-            {
-                if(n == _myIndex)
-                    _infoSlot[n].ShowReady(true);
-                else
-                    _infoSlot[n].ShowReady(false);
-            }   
-        }
+        if (_infoSlot[slotIndex]._IsReady)
+            _infoSlot[slotIndex].ShowReady(false);
         else
-        {
-            _infoSlot[_myIndex].ShowReady(false);
-            for (int n = 0; n < _infoSlot.Length; n++)
-            {
-                if (!string.IsNullOrEmpty(_otherName[n]))
-                {
-                    if (_otherName[n].Equals(name))
-                        _infoSlot[n].ShowReady(true);
-                    else
-                        _infoSlot[n].ShowReady(false);
-                }
-            }
-        }
+            _infoSlot[slotIndex].ShowReady(true);
     }
 
     public void ShowExit(string name)
@@ -319,6 +319,7 @@ public class IngameManager : MonoBehaviour
 
     public void ExitRoom()
     {
+        ClientManager._instance._IsIngame = false;
         SceneManager.LoadScene("LobbyScene");
         ClientManager._instance.ExitRoom();
     }

@@ -20,6 +20,8 @@ public class LobbyManager : MonoBehaviour
 
     public delegate void VoidCallBack(int num, bool isLock);
 
+    List<RoomInfo> _roomList = new List<RoomInfo>();
+
     private void Awake()
     {
         _uniqueInstance = this;
@@ -41,8 +43,19 @@ public class LobbyManager : MonoBehaviour
 
     public void ShowRoomInfo(int roomNumber, string roomName, bool isLock, int currentMember)
     {
+        for(int n = 0; n < _roomList.Count; n++)
+        {
+            if (_roomList[n]._RoomNumber == roomNumber)
+            {
+                _roomList[n].Renew(roomName, isLock, currentMember, 8);
+                return;
+            }   
+        }
+
         RoomInfo roomInfo = Instantiate(_roomInfoObj, _roomInfoRoot).GetComponent<RoomInfo>();
-        roomInfo.InitRoom(roomNumber, roomName, isLock, currentMember, 3, EnterRoom);
+        roomInfo.InitRoom(roomNumber, roomName, isLock, currentMember, 8, EnterRoom);
+
+        _roomList.Add(roomInfo);
     }
 
     public void EnterRoom(int num, bool isLock)

@@ -639,6 +639,7 @@ MonoBehaviour:
   _turnImg: {fileID: 5344674345146229924}
   _emptySlot: {fileID: 4579873306146236281}
   _connectSlot: {fileID: 4996993452521849587}
+  _aiImg: {fileID: 21300000, guid: c5dbd5e8d0f97ab45af4c3e87555cbab, type: 3}
 --- !u!1 &5344674345146229930
 GameObject:
   m_ObjectHideFlags: 0

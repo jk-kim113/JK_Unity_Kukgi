@@ -155,6 +155,11 @@ public class ClientManager : TSingleton<ClientManager>
                             yield return null;
                         }
 
+                        DefinedStructure.Packet_SuccessEnterRoom pSuccessEnter = new DefinedStructure.Packet_SuccessEnterRoom();
+                        pSuccessEnter = (DefinedStructure.Packet_SuccessEnterRoom)ConvertPacket.ByteArrayToStructure(pToClient._data, pSuccessEnter.GetType(), pToClient._totalSize);
+
+                        IngameManager._instance.ShowUserInfo(pSuccessEnter._slotIndex, _myName, _myAvatar, true);
+
                         break;
 
                     case DefinedProtocol.eToClient.FailEnterRoom:
@@ -176,6 +181,7 @@ public class ClientManager : TSingleton<ClientManager>
                         }
 
                         IngameManager._instance.ShowMaster(_myName, true);
+                        IngameManager._instance.ShowUserInfo(0, _myName, _myAvatar, true);
 
                         break;
 
@@ -184,12 +190,8 @@ public class ClientManager : TSingleton<ClientManager>
                         DefinedStructure.Packet_ShowRoomInfo pShowRoomInfo = new DefinedStructure.Packet_ShowRoomInfo();
                         pShowRoomInfo = (DefinedStructure.Packet_ShowRoomInfo)ConvertPacket.ByteArrayToStructure(pToClient._data, pShowRoomInfo.GetType(), pToClient._totalSize);
 
-                        while(!_isInLobby)
-                        {
-                            yield return null;
-                        }
-
-                        LobbyManager._instance.ShowRoomInfo(pShowRoomInfo._roomNumber, pShowRoomInfo._roomName, pShowRoomInfo._isLock == 0 ? true : false, pShowRoomInfo._currentMemberNum);
+                        if(_isInLobby)
+                            LobbyManager._instance.ShowRoomInfo(pShowRoomInfo._roomNumber, pShowRoomInfo._roomName, pShowRoomInfo._isLock == 0 ? true : false, pShowRoomInfo._currentMemberNum);
 
                         break;
 
@@ -228,6 +230,15 @@ public class ClientManager : TSingleton<ClientManager>
                         IngameManager._instance.ShowUserInfo(pShowUser._slotIndex, pShowUser._name, pShowUser._avatarIndex, pShowUser._name.Equals(_myName));
 
                         break;
+
+                    case DefinedProtocol.eToClient.ShowAI:
+
+                        DefinedStructure.Packet_ShowAI pShowAI = new DefinedStructure.Packet_ShowAI();
+                        pShowAI = (DefinedStructure.Packet_ShowAI)ConvertPacket.ByteArrayToStructure(pToClient._data, pShowAI.GetType(), pToClient._totalSize);
+
+                        IngameManager._instance.ShowAI(pShowAI._slotIndex, pShowAI._aiName);
+
+                        break;
                     #endregion
 
                     #region 게임 시작을 알려주는 곳
@@ -236,7 +247,7 @@ public class ClientManager : TSingleton<ClientManager>
                         DefinedStructure.Packet_ShowReady pShowReady = new DefinedStructure.Packet_ShowReady();
                         pShowReady = (DefinedStructure.Packet_ShowReady)ConvertPacket.ByteArrayToStructure(pToClient._data, pShowReady.GetType(), pToClient._totalSize);
 
-                        IngameManager._instance.ShowReady(pShowReady._name, pShowReady._name == _myName);
+                        IngameManager._instance.ShowReady(pShowReady._slotIndex);
 
                         break;
 
@@ -337,6 +348,7 @@ public class ClientManager : TSingleton<ClientManager>
         pChooseCard._roomNumber = _myRoomNum;
         pChooseCard._cardIdx1 = idx[0];
         pChooseCard._cardIdx2 = idx[1];
+        pChooseCard._slotIndex = IngameManager._instance._MyIndex;
 
         ToPacket(DefinedProtocol.eFromClient.ChooseCard, pChooseCard);
     }
@@ -426,7 +438,7 @@ public class ClientManager : TSingleton<ClientManager>
     {
         DefinedStructure.Packet_Ready pReady;
         pReady._roomNumber = _myRoomNum;
-        pReady._name = _myName;
+        pReady._slotIndex = IngameManager._instance._MyIndex;
 
         ToPacket(DefinedProtocol.eFromClient.Ready, pReady);
     }

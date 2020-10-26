@@ -18,6 +18,8 @@ public class UserInfo : MonoBehaviour
     GameObject _emptySlot;
     [SerializeField]
     GameObject _connectSlot;
+    [SerializeField]
+    Sprite _aiImg;
 #pragma warning restore
 
     bool _isConnect = false;
@@ -25,6 +27,8 @@ public class UserInfo : MonoBehaviour
 
     int _correctNum = 0;
     int _index;
+    bool _isReady;
+    public bool _IsReady { get { return _isReady; } }
 
     private void Awake()
     {
@@ -57,6 +61,16 @@ public class UserInfo : MonoBehaviour
         ConnectRoom(true);
     }
 
+    public void ShowAI(string name)
+    {
+        _avatarImg.sprite = _aiImg;
+        _isConnect = true;
+        _nameTxt.text = name;
+        ShowTurnIcon(false);
+
+        ConnectRoom(true);
+    }
+
     public void ShowCorrectNumber()
     {
         _correctNumTxt.text = (++_correctNum).ToString();
@@ -77,7 +91,9 @@ public class UserInfo : MonoBehaviour
 
     public void ShowReady(bool isReady)
     {
-        if(isReady)
+        _isReady = isReady;
+
+        if (isReady)
             _nameTxt.color = Color.yellow;
         else
             _nameTxt.color = Color.black;

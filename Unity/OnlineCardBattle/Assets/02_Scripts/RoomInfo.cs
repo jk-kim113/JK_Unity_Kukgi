@@ -17,13 +17,19 @@ public class RoomInfo : MonoBehaviour
 #pragma warning restore
 
     int _roomNumber;
+    public int _RoomNumber { get { return _roomNumber; } }
 
     public void InitRoom(int roomNum, string title, bool isLock, int currentMember, int maxMember, LobbyManager.VoidCallBack callback)
     {
         _roomNumber = roomNum;
+        Renew(title, isLock, currentMember, maxMember);
+        _enterBtn.onClick.AddListener(() => { callback(_roomNumber, isLock); });
+    }
+
+    public void Renew(string title, bool isLock, int currentMember, int maxMember)
+    {
         _titleTxt.text = title;
         _lockImg.SetActive(isLock);
         _memberNumTxt.text = string.Format("{0} / {1}", currentMember, maxMember);
-        _enterBtn.onClick.AddListener(() => { callback(_roomNumber, isLock); });
     }
 }

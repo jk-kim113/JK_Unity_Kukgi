@@ -14,4 +14,15 @@ public class GameResultWindow : MonoBehaviour
     {
         _gameResultTxt.text = resultTxt;
     }
+
+    public void StayBtn()
+    {
+        IngameManager._instance.InitIngame();
+        Destroy(gameObject);
+    }
+
+    public void ExitBtn()
+    {
+        IngameManager._instance.ExitRoom();
+    }
 }
